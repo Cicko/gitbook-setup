@@ -1,0 +1,22 @@
+{
+  "name": "gitbook-setup",
+  "version": "1.0.0",
+  "description": "This is my first node package that will be for setup gitbook.",
+  "main": "index.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17.git"
+  },
+  "keywords": [
+    "gitbook"
+  ],
+  "author": "Rudolf Cicko",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
+  },
+  "homepage": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17#readme"
+}
