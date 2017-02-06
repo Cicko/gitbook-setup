@@ -14,6 +14,18 @@
     "gitbook"
   ],
   "author": "Rudolf Cicko",
+  "contributors": [
+    {
+      "name": "Casiano Rodríguez León",
+      "email": "casiano.rodriguez.leon@gmail.com",
+      "url": "https://github.com/crguezl",
+      "contributions": 20,
+      "hireable": true
+    }
+  ],
+  "dependencies": {
+    "contributor": "0.1.x"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
