@@ -24,7 +24,8 @@
     }
   ],
   "dependencies": {
-    "contributor": "0.1.x"
+    "contributor": "0.1.x",
+    "gitbook": "^3.2.2"
   },
   "license": "ISC",
   "bugs": {
