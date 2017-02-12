@@ -3,6 +3,9 @@
   "version": "1.0.3",
   "description": "This is my first node package that will be for setup gitbook.",
   "main": "index.js",
+  "bin": {
+    "gitbook-setup": "./bin/gitbook-setup.js"
+  },
   "scripts": {
     "test": "gulp test"
   },
@@ -25,11 +28,15 @@
   ],
   "dependencies": {
     "contributor": "0.1.x",
-    "gitbook": "^3.2.2"
+    "gitbook": "^3.2.2",
+    "minimist": "^1.2.0"
   },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
   },
-  "homepage": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17#readme"
+  "homepage": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17#readme",
+  "directories": {
+    "bin": "./bin"
+  }
 }
