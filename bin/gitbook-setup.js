@@ -6,7 +6,14 @@ var Task = require('shell-task')
 
 if (argv.n) {
   var bookName = argv.n;
-  new Task('gitbook init ' + bookName);
+  new Task('gitbook init ' + bookName).run(function (err, next) {
+    if (err) {
+      console.log("Error happen " + err);
+    }
+    else {
+      console.log("Book created!!");
+    }
+  });
   //cli.deploy.deployTemplate(argv.n);
 } else if (argv.g) {
   console.log("Opción -g ha sido utilizada");
