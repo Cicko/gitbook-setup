@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 var argv = require('minimist')(process.argv.slice(2));
-var gitbook = require('gitbook-api')
 var Task = require('shell-task')
 //var cli = require('../src');
 
