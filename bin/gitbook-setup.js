@@ -5,7 +5,7 @@ var Task = require('shell-task')
 //var cli = require('../src');
 
 if (argv.n) {
-  console.log("Opcion -n ha sido utilizada con valor: ");
+  console.log("Opcion -n ha sido utilizada con valor: " + argv.n);
 
   //cli.deploy.deployTemplate(argv.n);
 } else if (argv.g) {
