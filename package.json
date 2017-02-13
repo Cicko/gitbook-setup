@@ -28,15 +28,14 @@
   ],
   "dependencies": {
     "contributor": "0.1.x",
+    "example": "file:./example/example.js",
     "gitbook": "^3.2.2",
-    "minimist": "^1.2.0"
+    "minimist": "^1.2.0",
+    "shell-task": "^1.0.0"
   },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
   },
-  "homepage": "https://www.npmjs.com/package/gitbook-setup",
-  "directories": {
-    "bin": "./bin"
-  }
+  "homepage": "https://www.npmjs.com/package/gitbook-setup"
 }
