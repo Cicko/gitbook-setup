@@ -38,8 +38,6 @@
   },
   "homepage": "https://www.npmjs.com/package/gitbook-setup",
   "files": [
-    "api",
-    "book",
-    "faq"
+    "api"
   ]
 }
