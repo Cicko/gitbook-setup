@@ -1,10 +1,28 @@
 #! /usr/bin/env node
-require('gitbook-api-template.js');
 var argv = require('minimist')(process.argv.slice(2));
 var Task = require('shell-task');
 var fs = require('fs');
 //var cli = require('../src');
 var templatesPath = require("path").join(__dirname, "../", "templates/");
+
+
+var tacks = require('tacks')
+var dir = Tacks.Dir
+var file = Tacks.File
+var symlink = Tacks.Symlink
+
+
+
+
+var apiTemplate = new Tacks(Dir({
+  'book.json': symlink('../templates/api/book.json'),
+  'methods.md': symlink('../templates/api/methods.md')
+}))
+
+
+exports.createAPIBook = function () {
+  apiTemplate.create('templates');
+}
 
 
 

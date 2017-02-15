@@ -4,8 +4,7 @@
   "description": "This is my first node package that will be for setup gitbook.",
   "main": "./bin/gitbook-setup.js",
   "bin": {
-    "gitbook-setup": "./bin/gitbook-setup.js",
-    "gitbook-api-template": "./bin/gitbook-api-template.js"
+    "gitbook-setup": "./bin/gitbook-setup.js"
   },
   "scripts": {
     "test": "gulp test"
