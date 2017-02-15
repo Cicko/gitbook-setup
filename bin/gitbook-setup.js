@@ -6,45 +6,43 @@ var fs = require('fs');
 var templatesPath = require("path").join(__dirname, "../", "templates/");
 
 
-var tacks = require('tacks')
-var dir = Tacks.Dir
-var file = Tacks.File
-var symlink = Tacks.Symlink
+var Tacks = require('tacks')
+var Dir = Tacks.Dir
+var File = Tacks.File
+
+var apiTemplate;
 
 
 
+apiTemplate = new Tacks(Dir({
+  'book.json': File(templatesPath + 'api/book.json'),
+  'methods.md': File(templatesPath + 'api/methods.md')
+}));
 
-var apiTemplate = new Tacks(Dir({
-  'book.json': symlink('../templates/api/book.json'),
-  'methods.md': symlink('../templates/api/methods.md')
-}))
-
-
-exports.createAPIBook = function () {
-  apiTemplate.create('templates');
-}
+saveTemplates(templatesPath);
 
 
 
-//saveTemplates(templatesPath);
-
-
-/*
 function saveTemplates (basePath) {
-  console.log(basePath + " is the basePath")
+  console.log(basePath + " is the basePath");
   fs.readdirSync(basePath).forEach(function(file) {
     console.log("the file to check is: " + file)
     if (fs.lstatSync(basePath + file).isDirectory()) {
-      console.log(file + " is a directory");
       saveTemplates(basePath + "" + file + '/');
     }
     else if (fs.lstatSync(basePath + file).isFile()){
-      console.log(file + " is a file");
-      require(basePath  + file);
+      var filePath = basePath  + file;
+      fs.readFile(filePath, 'utf8', function (err,data) {
+        if (err) {
+          return console.log(err);
+        }
+        console.log("Data of " + filePath);
+        console.log(data);
+      });
     }
   });
 }
-*/
+
 
 if (argv.n) {
   var bookName = argv.n;
@@ -64,7 +62,7 @@ if (argv.n) {
 
   console.log(templatesPath);
 
-  createAPIBook();
+  //apiTemplate.create('templates');
 
   //cli.githubRepo.createRepo(argv.u);
 } else {
