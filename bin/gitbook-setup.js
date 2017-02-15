@@ -1,8 +1,9 @@
 #! /usr/bin/env node
 
 var argv = require('minimist')(process.argv.slice(2));
-var Task = require('shell-task')
+var Task = require('shell-task');
 //var cli = require('../src');
+var exampleFile = require('../templates/api/book.json');
 
 if (argv.n) {
   var bookName = argv.n;
@@ -14,9 +15,14 @@ if (argv.n) {
       console.log("Book created!!");
     }
   });
+
+
   //cli.deploy.deployTemplate(argv.n);
 } else if (argv.g) {
   console.log("Opción -g ha sido utilizada");
+
+  console.log(exampleFile);
+
   //cli.githubRepo.createRepo(argv.u);
 } else {
     console.log("Comandos válidos:");
