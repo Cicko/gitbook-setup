@@ -2,7 +2,8 @@
 var argv = require('minimist')(process.argv.slice(2));
 var Task = require('shell-task');
 var fs = require('fs');
-var templatesPath = require("path").join(__dirname, "../", "templates/");
+var path = require('path');
+var templatesPath = path.join(__dirname, "../", "templates/");
 
 
 var Tacks = require('tacks')
@@ -41,7 +42,7 @@ function saveTemplates (basePath, type) {
 
 function createFilesForBook () {
   template = new Tacks(Dir(templateFiles));
-  template.create(bookName);
+  template.create(path.join(__dirname, bookName);
 }
 
 if (argv.n) {
