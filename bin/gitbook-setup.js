@@ -3,7 +3,7 @@
 var argv = require('minimist')(process.argv.slice(2));
 var Task = require('shell-task');
 //var cli = require('../src');
-var exampleFile = require('../templates/api/book.json');
+var exampleFile = require('../templates');
 
 if (argv.n) {
   var bookName = argv.n;
