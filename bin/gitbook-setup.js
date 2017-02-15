@@ -42,7 +42,8 @@ function saveTemplates (basePath, type) {
 
 function createFilesForBook () {
   template = new Tacks(Dir(templateFiles));
-  template.create(path.join(__dirname, "/" , bookName));
+  var exportPath = path.join(__dirname, "/" , bookName);
+  template.create(exportPath);
 }
 
 if (argv.n) {
