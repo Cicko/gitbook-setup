@@ -32,14 +32,12 @@
     "gitbook": "^3.2.2",
     "minimist": "^1.2.0",
     "path": "^0.12.7",
-    "shell-task": "^1.0.0"
+    "shell-task": "^1.0.0",
+    "tacks": "^1.2.2"
   },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
   },
-  "homepage": "https://www.npmjs.com/package/gitbook-setup",
-  "files": [
-    "./templates/example/"
-  ]
+  "homepage": "https://www.npmjs.com/package/gitbook-setup"
 }
