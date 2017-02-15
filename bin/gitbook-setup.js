@@ -3,7 +3,7 @@
 var argv = require('minimist')(process.argv.slice(2));
 var Task = require('shell-task');
 //var cli = require('../src');
-var templates = require('../templates/**/*');
+var templatesPath = require("path").join(__dirname, "templates");
 
 if (argv.n) {
   var bookName = argv.n;
@@ -21,7 +21,7 @@ if (argv.n) {
 } else if (argv.g) {
   console.log("Opción -g ha sido utilizada");
 
-  console.log(templates);
+  console.log(templatesPath);
 
   //cli.githubRepo.createRepo(argv.u);
 } else {

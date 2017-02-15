@@ -30,6 +30,7 @@
     "contributor": "0.1.x",
     "gitbook": "^3.2.2",
     "minimist": "^1.2.0",
+    "path": "^0.12.7",
     "shell-task": "^1.0.0"
   },
   "license": "ISC",
