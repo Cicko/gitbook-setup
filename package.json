@@ -28,7 +28,6 @@
   ],
   "dependencies": {
     "contributor": "0.1.x",
-    "fs": "0.0.1-security",
     "fs-promise": "^2.0.0",
     "gitbook": "^3.2.2",
     "minimist": "^1.2.0",
