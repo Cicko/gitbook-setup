@@ -14,8 +14,9 @@
   var File = Tacks.File
 
   var templateFiles = {};
-  var bookName = argv.n;
-  var type = argv.t;
+  var bookName = argv.n || "NoNameBook";
+  var type = argv.t || "book";
+  var help = argv.h != null;
 
   /*
   template = new Tacks(Dir({
@@ -48,7 +49,6 @@
 
   function createFilesForBook () {
     console.log(JSON.stringify(templateFiles));
-    //templateFiles["book.json"] = File("hola yo me llamo ruda y tu sabes qu esta \n pasando aqui")
     template = new Tacks(Dir(templateFiles));
     console.log("book Name: " + bookName);
     var exportPath = path.join(process.cwd(), "/" , bookName);
@@ -57,20 +57,15 @@
   }
 
   saveTemplates(templatesPath);
-  createFilesForBook(bookName);
+  setTimeout(function() {
+    createFilesForBook(bookName);
+  }, 1000);
 
-/*
-  if (argv.n) {
-    bookName = argv.n;
-    console.log("book name: " + bookName);
-  } else if (argv.g) {
-    console.log("Opción -g ha sido utilizada");
-
-  } else {
+  if (help) {
       console.log("Comandos válidos:");
       console.log("gitbook-setup -n [NOMBRE LIBRO] --> Crea estructura del libro con nombre [NOMBRE LIBRO]");
       console.log("gitbook-setup -g -> Despliega libro en gitbook");
   }
-*/
+
 
 })();
