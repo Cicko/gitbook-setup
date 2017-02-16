@@ -3,11 +3,10 @@
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
   var Task = require('shell-task');
-  //var fs = require('fs');
   var fs = require('fs-promise');
   var path = require('path');
+  var promise = require('promise');
   var templatesPath = path.join(__dirname, "../", "templates/");
-
 
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
@@ -18,20 +17,11 @@
   var type = argv.t || "book";
   var help = argv.h != null;
 
-  /*
-  template = new Tacks(Dir({
-    'book.json': File(templatesPath + 'api/book.json'),
-    'methods.md': File(templatesPath + 'api/methods.md')
-  }));
-  */
-
-  function saveTemplates (basePath) {
-    console.log(basePath + " is the basePath");
+  function loadTemplates (basePath) {
     fs.readdirSync(basePath).forEach(function(file) {
       if (fs.lstatSync(basePath + file).isDirectory()) {
         if (type == file) {
-          console.log("the wanted type is: " + type);
-          saveTemplates(basePath + "" + file + '/');
+          loadTemplates(basePath + "" + file + '/');
         }
       }
       else if (fs.lstatSync(basePath + file).isFile()){
@@ -40,31 +30,28 @@
           if (err) {
             return console.log(err);
           }
-          console.log(file + "is the filename");
           templateFiles[file] = File(data);
         });
       }
     })
   }
 
-  function createFilesForBook () {
-    console.log(JSON.stringify(templateFiles));
+  function exportTemplate () {
     template = new Tacks(Dir(templateFiles));
-    console.log("book Name: " + bookName);
     var exportPath = path.join(process.cwd(), "/" , bookName);
-    console.log("Export Path: " + exportPath);
     template.create(exportPath);
   }
-
-  saveTemplates(templatesPath);
-  setTimeout(function() {
-    createFilesForBook(bookName);
-  }, 1000);
 
   if (help) {
       console.log("Comandos válidos:");
       console.log("gitbook-setup -n [NOMBRE LIBRO] --> Crea estructura del libro con nombre [NOMBRE LIBRO]");
       console.log("gitbook-setup -g -> Despliega libro en gitbook");
+  }
+  else {
+      loadTemplates(templatesPath);
+      setTimeout(function() {
+        exportTemplate();
+      }, 1000);
   }
 
 
