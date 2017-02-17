@@ -20,6 +20,7 @@ where
   - api
   - book
   - faq
+  - Your own book specification. so in this field you have to indicate the book folder root name.
 
 An example of a command to create an api book named *"documentacion de C++14"* will be:
 

@@ -1,0 +1,249 @@
+#!/bin/bash
+
+# version: Semver helper
+#
+# Author: Steven Enten <steven@enten.fr>
+# License : MIT
+# Requirements: awk basename dirname cat echo eval grep readlink shift
+# Site: https//github.com/enten/losh
+
+set -eu
+
+#
+# consts
+#
+CMDNAME=$(basename $0)
+CMDVERS="0.0.1"
+CMDUSAGE="[release] <M|m|p> [inc] ..."
+CMDDESC="Semver helper"
+TAB="    "
+
+#
+# vars
+#
+major=
+minor=
+patch=
+increment=
+i=
+j=
+k=
+tmp=
+
+#
+# initialize vars
+#
+init() {
+  tmp=$(dirname $(readlink -f $(echo $0)))
+
+  while [ ! -f "$tmp/VERSION" ]; do
+    tmp=$(dirname $tmp)
+    [ "$tmp" = "/" ] && break
+  done
+
+  [ ! -f "$tmp/VERSION" ] && echo "VERSION was not found" && exit 1
+
+  VERSPATH="$tmp/VERSION"
+  VERSION=$(cat $VERSPATH)
+  [ -z "$VERSION" ] && VERSION="0.0.0"
+
+  return 0
+}
+
+#
+# usage
+#
+usage() {
+  echo "NAME:"
+  echo "${TAB}${CMDNAME} - ${CMDDESC}"
+  echo
+  echo "VERSION:"
+  echo "${TAB}${CMDVERS}"
+  echo
+  echo "USAGE:"
+  echo "${TAB}${CMDNAME} ${CMDUSAGE}"
+  echo
+  echo "COMMANDS:"
+  echo "${TAB}${CMDNAME}                              Current version"
+  echo "${TAB}${CMDNAME} <M|m|p> [inc] ...            Bump version"
+  echo "${TAB}${CMDNAME} release <M|m|p> [inc] ...    Update version"
+  echo "${TAB}${CMDNAME} ?|h|help                     Print this help message"
+  echo
+  [ $# -gt 0 ] && exit $1 || return 0
+}
+
+write_version() {
+  echo $VERSION > $VERSPATH
+  echo "$VERSPATH initialized with $VERSION"
+
+  return 0
+}
+
+#
+# what we do when there are a new release
+#
+handle_release() {
+  write_version
+  #try_commit
+
+  return 0
+}
+
+#
+# try to make commit
+#
+try_commit() {
+  tmp=$(dirname $VERSPATH)
+
+  if [ -d "$tmp/.git" ]; then
+    git add $VERSPATH
+    git commit -m "Release version $VERSION"
+    git tag -a "v$0.0.1" -m "version $VERSION" $(git log --pretty=oneline -n 1 | awk '{print $1}')
+  fi
+
+  return 0
+}
+
+#
+# command: version
+#
+cmdVoid() {
+  echo $VERSION && exit 0
+}
+
+#
+# command: version ?|h|help
+#
+cmdHelp() {
+  usage 0
+}
+
+#
+# command: version init|set [version]
+#
+cmdInit() {
+  VERSION="0.0.0"
+  [ $# -gt 0 ] && VERSION=$1
+
+  write_version
+
+  exit 0
+}
+
+#
+# command: version release <M|m|p> [increment] ...
+#
+cmdRelease() {
+  tmp=$0
+
+  [ $# -lt 1 ] && usage 1
+
+  VERSION=$($tmp $@)
+  k=$?
+
+  [ $k -ne 0 ] && usage 1
+
+  i=$($tmp)
+
+  echo "Old: $i"
+  echo "New: $VERSION"
+
+  handle_release
+
+  exit 0
+}
+
+#
+# command: version <M|m|p> [increment] ...
+#
+cmdDefault() {
+  j=0
+  for i in $(echo $VERSION | tr "\." "\n"); do
+    [ $j -eq 0 ] && major=$i
+    [ $j -eq 1 ] && minor=$i
+    [ $j -eq 2 ] && patch=$i
+    j=$(expr $j + 1)
+  done
+
+  i=1
+  j=
+  tmp=""
+  while [ $i -le $# ]; do
+    increment=1
+
+    tmp="$tmp $(eval echo \${$i})"
+
+    i=$(expr $i + 1)
+
+    if [ $i -le $# ]; then
+      j=$(eval echo \${$i})
+      if echo "$j" | grep -qE ^\-?[0-9\]+$; then
+        increment=$j
+        i=$(expr $i + 1)
+      fi
+    fi
+    tmp="$tmp:$increment "
+  done
+
+  for i in $(echo $tmp); do
+    j=$(echo $i | awk -F ':' '{print $1}')
+    k=$(echo $i | awk -F ':' '{print $2}')
+
+    set -- $j $k
+
+    case $1 in
+      M|major)
+        major=$(expr $major + $2)
+        minor=0
+        patch=0
+        ;;
+      m|minor)
+        minor=$(expr $minor + $2)
+        patch=0
+        ;;
+      p|patch)
+        patch=$(expr $patch + $2)
+        ;;
+      *)
+        usage 1
+      ;;
+    esac
+  done
+
+  [ $major -lt 0 ] && major=0
+  [ $minor -lt 0 ] && minor=0
+  [ $patch -lt 0 ] && patch=0
+
+  VERSION="${major}.${minor}.${patch}"
+
+  echo $VERSION
+}
+
+main() {
+  init
+
+  # command: version
+  [ $# -eq 0 ] && cmdVoid
+
+  # command: version ?|h|help
+  if [ "$1" = "?" ] || [ "$1" = "h" ] || [ "$1" = "help" ]; then
+    cmdHelp
+  fi
+
+  # command: version init|set [version]
+  if [ "$1" = "init" ] || [ "$1" = "set" ]; then
+    shift
+    cmdInit $@
+  fi
+
+  # command: version release <M|m|p> [increment] ...
+  if [ "$1" = "release" ]; then
+    shift
+    cmdRelease $@
+  fi
+
+  # command: version <M|m|p> [increment] ...
+  cmdDefault $@
+}
+
+main $@
