@@ -1,5 +1,4 @@
 #! /usr/bin/env node
-
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
   var Task = require('shell-task');
@@ -7,6 +6,7 @@
   var path = require('path');
   var Promise = require('promise');
   var templatesPath = path.join(__dirname, "../", "templates/");
+  var githubInterface = require('./github-interface.js').authenticate();
 
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
@@ -50,9 +50,6 @@
     else if (inSubdirectory)
       return Dir(filesInFolder);
   }
-
-
-
 
   function exportTemplate () {
     wantedTemplate['package.json'] = File({

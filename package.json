@@ -31,8 +31,10 @@
     "fs-promise": "^2.0.0",
     "gitbook": "^3.2.2",
     "minimist": "^1.2.0",
+    "octonode": "^0.7.9",
     "path": "^0.12.7",
     "promise": "^7.1.1",
+    "prompt": "^1.0.0",
     "shell-task": "^1.0.0",
     "tacks": "^1.2.2"
   },
