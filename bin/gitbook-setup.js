@@ -53,8 +53,13 @@
 
 
 
+
   function exportTemplate () {
-    console.log(wantedTemplate);
+    wantedTemplate['package.json'] = File({
+      author: process.env.USER,
+      name: bookName,
+      version: '0.0.1'
+    })
     template = new Tacks(Dir(wantedTemplate));
     var exportPath = path.join(process.cwd(), "/" , bookName);
     template.create(exportPath);
