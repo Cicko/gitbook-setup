@@ -1,6 +1,7 @@
 (function() {
   var github = require('octonode');
   var prompt = require('prompt');
+  var client;
 
   function authenticate () {
         prompt.get([{
@@ -31,6 +32,10 @@
 
 
   module.exports = {
+    checkAuth: function(auth) {
+      if (auth == "github")
+        authenticate();
+    },
     authenticate: function() {
       authenticate();
     },

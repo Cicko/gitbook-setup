@@ -6,7 +6,7 @@
   var path = require('path');
   var Promise = require('promise');
   var templatesPath = path.join(__dirname, "../", "templates/");
-  var githubInterface = require('./github-interface.js').authenticate();
+  var githubInterface = require('./github-interface.js').checkAuth(argv.login);
 
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
@@ -16,6 +16,7 @@
   var bookName = argv.n || "NoNameBook";
   var type = argv.t || "book";
   var help = argv.h != null;
+
 
   /**
   * This method load the files into the wantedTemplate object
@@ -65,6 +66,7 @@
   if (help) {
       console.log("Valid commands:");
       console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]");
+      console.log("gitbook-setup --github-auth");
   }
   else {
     loadTemplates(path.join(templatesPath, type, "/"), null, false);
