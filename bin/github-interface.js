@@ -1,5 +1,6 @@
 (function() {
   var github = require('octonode');
+  var ghme;
   var prompt = require('prompt');
   var authenticated = false;
   var client;
@@ -28,6 +29,8 @@
             console.log("user authenticated correctly")
             authenticated = true;
             console.log(body);
+            ghme = client.me();
+            createRepo("sampleRepo");
           }
         });
       });
@@ -35,23 +38,37 @@
 
 
   function createRepo () {
-    github.repos.create({
-      name: name
+    prompt.get([{
+      name: 'repo name',
+      required: true
+    }, {
+      name: 'description',
+      required: false
+    }], function (err, result) {
+      ghme.repo({
+          "name": result.name,
+          "description": result.description,
+      }, function (err) {
+        if (err) {
+          console.log("Error happen: " + err);
+        }
+      });
     });
   }
 
 
   module.exports = {
     checkArgs: function(auth) {
-      if (auth.login == "github")
+      if (auth.login == "github") {
         authenticate();
+      }
     },
     authenticate: function() {
       authenticate();
     },
     createRepo: function(name) {
       if (authenticated) {
-        createRepo();
+        createRepo(name);
       }
       else {
         authenticate();

@@ -7,7 +7,8 @@
   var Promise = require('promise');
   var templatesPath = path.join(__dirname, "../", "templates/");
   var githubInterface = require('./github-interface.js').checkArgs(argv);
-  var gitbookInteractive = require('./gitbook-interactive.js').checkArgs(argv);
+  var gitbookInteractive = require('./gitbook-interactive.js');
+  var bookConfig = require('./book-config.js');
 
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
@@ -61,6 +62,10 @@
     template.create(exportPath);
   }
 
+  if (gitbookInteractive.checkArgs(argv)) {
+    var bookInfo = gitbookInteractive.createBook();
+    bookConfig.createBook(bookInfo);
+  }
 
   if (help || process.argv.length == 2) {
       console.log("Valid commands:");

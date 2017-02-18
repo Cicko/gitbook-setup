@@ -50,9 +50,8 @@
   }
 
   module.exports.checkArgs = function (args) {
-    if (args.i || args.interactive) {
-      module.exports.createBook();
-    }
+    return (args.i || args.interactive);
+
   }
 
 
