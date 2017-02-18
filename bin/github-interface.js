@@ -1,6 +1,7 @@
 (function() {
   var github = require('octonode');
   var prompt = require('prompt');
+  var authenticated = false;
   var client;
 
   function authenticate () {
@@ -25,24 +26,37 @@
           }
           else {
             console.log("user authenticated correctly")
+            authenticated = true;
+            console.log(body);
           }
         });
       });
   }
 
 
+  function createRepo () {
+    github.repos.create({
+      name: name
+    });
+  }
+
+
   module.exports = {
-    checkAuth: function(auth) {
-      if (auth == "github")
+    checkArgs: function(auth) {
+      if (auth.login == "github")
         authenticate();
     },
     authenticate: function() {
       authenticate();
     },
     createRepo: function(name) {
-      github.repos.create({
-        name: name
-      });
+      if (authenticated) {
+        createRepo();
+      }
+      else {
+        authenticate();
+      }
+
     },
     getRepo: function(name) {
       github.repos.get({

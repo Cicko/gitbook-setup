@@ -6,7 +6,8 @@
   var path = require('path');
   var Promise = require('promise');
   var templatesPath = path.join(__dirname, "../", "templates/");
-  var githubInterface = require('./github-interface.js').checkAuth(argv.login);
+  var githubInterface = require('./github-interface.js').checkArgs(argv);
+  var gitbookInteractive = require('./gitbook-interactive.js').checkArgs(argv);
 
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
@@ -15,23 +16,20 @@
   var wantedTemplate = {};
   var bookName = argv.n || "NoNameBook";
   var type = argv.t || "book";
-  var help = argv.h != null;
+  var help = argv.h != null || argv.help != null;
 
 
   /**
   * This method load the files into the wantedTemplate object
   * - basePath: is the path where it starts to search the wanted folder specified by the variable type
-  * - inWantedFolder: a boolean parameter that indicates if is looking for the root folder of the wanted type.
-  * That means that the first time the method is called the inWantedFolder parameter will be true because it
-  * will be looking in the templates folder. After that will be false because it will be looking in the
-  * subdirectories.
+  * - inSubdirectory: is true when is looking inside the subfolders of the template.
   **/
-  function loadTemplates (basePath, parentFolder, inSubdirectory) {
+  function loadTemplates (basePath, inSubdirectory) {
     var filesInFolder = {};
     fs.readdirSync(basePath).forEach(function(file) {
       if (fs.lstatSync(basePath + file).isDirectory()) {
         var subDirectoryPath = path.join(basePath, file, '/');
-        filesInFolder[file] = loadTemplates(subDirectoryPath, file, true);
+        filesInFolder[file] = loadTemplates(subDirectoryPath, true);
       }
       else if (fs.lstatSync(basePath + file).isFile()){
         var filePath = basePath + file;
@@ -39,16 +37,16 @@
           if (err) {
             return console.log(err);
           }
-          if (!parentFolder)
+          if (!inSubdirectory)
             wantedTemplate[file] = File(data);
           else
             filesInFolder[file] = File(data);
         });
       }
     });
-    if (!inSubdirectory && !parentFolder) // book folder root
+    if (!inSubdirectory) // book folder root
       wantedTemplate = filesInFolder;
-    else if (inSubdirectory)
+    else
       return Dir(filesInFolder);
   }
 
@@ -63,13 +61,16 @@
     template.create(exportPath);
   }
 
-  if (help) {
+
+  if (help || process.argv.length == 2) {
       console.log("Valid commands:");
-      console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]");
-      console.log("gitbook-setup --github-auth");
+      console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
+      console.log("gitbook-setup --login=github                        --> Login on github");
+      console.log("gitbook-setup -i | --interactive                    --> create book in interactive form");
+      console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
   else {
-    loadTemplates(path.join(templatesPath, type, "/"), null, false);
+    loadTemplates(path.join(templatesPath, type, "/"), false);
     setTimeout(function () {
       exportTemplate();
     }, 1000);

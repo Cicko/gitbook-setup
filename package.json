@@ -14,7 +14,8 @@
     "url": "git+https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17.git"
   },
   "keywords": [
-    "gitbook"
+    "gitbook",
+    "setup"
   ],
   "author": "Rudolf Cicko",
   "contributors": [
@@ -30,6 +31,7 @@
     "contributor": "0.1.x",
     "fs-promise": "^2.0.0",
     "gitbook": "^3.2.2",
+    "inquirer": "^3.0.1",
     "minimist": "^1.2.0",
     "octonode": "^0.7.9",
     "path": "^0.12.7",
