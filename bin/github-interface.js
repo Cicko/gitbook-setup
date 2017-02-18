@@ -39,7 +39,7 @@
 
   function createRepo () {
     prompt.get([{
-      name: 'repo name',
+      name: 'name',
       required: true
     }, {
       name: 'description',
