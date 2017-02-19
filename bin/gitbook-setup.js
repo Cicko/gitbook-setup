@@ -53,12 +53,12 @@
 
   function exportTemplate () {
     wantedTemplate['package.json'] = File({
-      author: process.env.USER,
-      name: bookName,
+      author: bookInfo.author | process.env.USER,
+      name: bookInfo.name | "NoNameBook",
       version: '0.0.1'
     })
     template = new Tacks(Dir(wantedTemplate));
-    var exportPath = path.join(process.cwd(), "/" , bookName);
+    var exportPath = path.join(process.cwd(), "/" , bookInfo.name);
     template.create(exportPath);
   }
 

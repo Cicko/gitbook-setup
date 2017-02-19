@@ -51,7 +51,6 @@
 
   module.exports.checkArgs = function (args) {
     return (args.i || args.interactive);
-
   }
 
 

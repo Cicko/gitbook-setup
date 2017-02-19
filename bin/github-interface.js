@@ -30,7 +30,7 @@
             authenticated = true;
             console.log(body);
             ghme = client.me();
-            createRepo("sampleRepo");
+            createRepo();
           }
         });
       });
@@ -45,14 +45,19 @@
       name: 'description',
       required: false
     }], function (err, result) {
-      ghme.repo({
-          "name": result.name,
-          "description": result.description,
-      }, function (err) {
-        if (err) {
-          console.log("Error happen: " + err);
-        }
-      });
+      if (!err) {
+        ghme.repo({
+            "name": result.name,
+            "description": result.description,
+          }, function (err2) {
+            if (err) {
+              console.log("Error happen: " + err2);
+            }
+          });
+      }
+      else {
+        console.log("Error happen: " + err);
+      }
     });
   }
 
