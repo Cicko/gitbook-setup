@@ -53,8 +53,8 @@
 
   function exportTemplate () {
     wantedTemplate['package.json'] = File({
-      author: bookInfo.author | process.env.USER,
-      name: bookInfo.name | "NoNameBook",
+      author: bookInfo.author || process.env.USER,
+      name: bookInfo.name || "NoNameBook",
       version: '0.0.1'
     })
     template = new Tacks(Dir(wantedTemplate));
