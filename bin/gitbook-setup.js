@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
   var Task = require('shell-task');
@@ -8,7 +9,9 @@
   var templatesPath = path.join(__dirname, "../", "templates/");
   var githubInterface = require('./github-interface.js').checkArgs(argv);
   var gitbookInteractive = require('./gitbook-interactive.js');
-  var bookConfig = require('./book-config.js');
+  const GitbookInquirer = require('./GitbookInquirer.js')
+  var asker = new GitbookInquirer();
+
 
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
@@ -51,6 +54,7 @@
       return Dir(filesInFolder);
   }
 
+/*
   function exportTemplate () {
     wantedTemplate['package.json'] = File({
       author: bookInfo.author || process.env.USER,
@@ -61,11 +65,15 @@
     var exportPath = path.join(process.cwd(), "/" , bookInfo.name);
     template.create(exportPath);
   }
-
+*/
+/*
   if (gitbookInteractive.checkArgs(argv)) {
     var bookInfo = gitbookInteractive.createBook();
     bookConfig.createBook(bookInfo);
   }
+*/
+  if (argv.i || argv.interactive) asker.ask();
+
 
   if (help || process.argv.length == 2) {
       console.log("Valid commands:");
@@ -75,11 +83,9 @@
       console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
   else {
-    loadTemplates(path.join(templatesPath, type, "/"), false);
+  //  loadTemplates(path.join(templatesPath, type, "/"), false);
     setTimeout(function () {
-      exportTemplate();
+  //    exportTemplate();
     }, 1000);
   }
-
-
 })();
