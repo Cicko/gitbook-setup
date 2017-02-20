@@ -6,31 +6,31 @@ var Dir = Tacks.Dir
 var File = Tacks.File
 
 var templatesPath = path.join(__dirname, "../", "templates/");
-
+var fileSystem = {}
 /**
 * This class creates the whole file system to create a book
 **/
 class BookCreator {
   constructor (bookConfig) {
     this.bookConfig = bookConfig;
-    this.fileSystem = {};
   }
 
   createBook () {
-      loadFileSystem(path.join(templatesPath, this.bookConfig.type, "/"), false);
-      setTimeout(function () {
-        exportFileSystem();
-      }, 1000);
+      var object = this;
+      this.loadFileSystem(path.join(templatesPath, this.bookConfig.type, "/"), false, function () {
+        console.log("A exportar")
+        object.exportFileSystem();
+      });
   }
 
   exportFileSystem () {
     var bookConfig = this.bookConfig;
-    this.fileSystem['package.json'] = File({
+    fileSystem['package.json'] = File({
       author: bookConfig.author || process.env.USER,
       name: bookConfig.name || "NoNameBook",
       version: '0.0.1'
     });
-    var template = new Tacks(Dir(this.fileSystem));
+    var template = new Tacks(Dir(fileSystem));
     var exportPath = path.join(process.cwd(), "/" , bookConfig.name);
     template.create(exportPath);
   }
@@ -40,12 +40,13 @@ class BookCreator {
   * - basePath: is the path where it starts to search the wanted folder specified by the variable type
   * - inSubdirectory: is true when is looking inside the subfolders of the template.
   **/
-  loadFileSystem (basePath, inSubdirectory) {
+  loadFileSystem (basePath, inSubdirectory, callback) {
+    var object = this;
     var filesInFolder = {};
     fs.readdirSync(basePath).forEach(function(file) {
       if (fs.lstatSync(basePath + file).isDirectory()) {
         var subDirectoryPath = path.join(basePath, file, '/');
-        filesInFolder[file] = loadFileSystem(subDirectoryPath, true);
+        filesInFolder[file] = object.loadFileSystem(subDirectoryPath, true);
       }
       else if (fs.lstatSync(basePath + file).isFile()){
         var filePath = basePath + file;
@@ -54,14 +55,18 @@ class BookCreator {
             return console.log(err);
           }
           if (!inSubdirectory)
-            this.fileSystem[file] = File(data);
+            fileSystem[file] = File(data);
           else
             filesInFolder[file] = File(data);
         });
       }
     });
-    if (!inSubdirectory) // book folder root
-      this.fileSystem = filesInFolder;
+    if (!inSubdirectory) {// book folder root
+      fileSystem = filesInFolder;
+      console.log("Final file system: ")
+      console.log(fileSystem);
+      callback();
+    }
     else
       return Dir(filesInFolder);
   }

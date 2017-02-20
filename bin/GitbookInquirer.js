@@ -5,7 +5,7 @@ const BookConfig = require('./BookConfig');
 class GitbookInquirer {
   constructor () { }
 
-  static ask () {
+  static ask (callback) {
     this.questions = [
       {
         type: 'input',
@@ -49,7 +49,7 @@ class GitbookInquirer {
       console.log('\nYour book summary:');
       console.log(JSON.stringify(answers, null, '  '));
       BookConfig.createFile(answers);
-      return answers;
+      callback(answers);
     });
   }
 }

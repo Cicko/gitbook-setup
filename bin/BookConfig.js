@@ -6,8 +6,7 @@ var File = Tacks.File
 
 
 /**
-* This class will receive all the information about the book to construct the
-*
+* This class will receive all the information about the book to construct a .config.book file to contains that info
 *
 **/
 
@@ -17,7 +16,7 @@ class BookConfig {
     var file = new Tacks(Dir({
       '.config.book' : File(bookSpecs)
     }));
-    var exportPath = path.join(process.cwd());//, "/" , bookSpecs.name);
+    var exportPath = path.join(process.cwd(), "/" , bookSpecs.name);
     file.create(exportPath);
   }
 }
