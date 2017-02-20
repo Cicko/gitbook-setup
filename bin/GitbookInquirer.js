@@ -1,9 +1,11 @@
+"use strict"
 var inquirer = require('inquirer')
 const BookConfig = require('./BookConfig');
-var bookConfig = new BookConfig();
 
 class GitbookInquirer {
-  constructor () {
+  constructor () { }
+
+  static ask () {
     this.questions = [
       {
         type: 'input',
@@ -43,13 +45,11 @@ class GitbookInquirer {
         default: process.env.USER
       }
     ];
-  }
-
-  ask () {
     inquirer.prompt(this.questions).then(function (answers) {
       console.log('\nYour book summary:');
       console.log(JSON.stringify(answers, null, '  '));
-      bookConfig.createFile(answers);
+      BookConfig.createFile(answers);
+      return answers;
     });
   }
 }

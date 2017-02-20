@@ -2,6 +2,7 @@
 
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
+  /*
   var Task = require('shell-task');
   var fs = require('fs');
   var path = require('path');
@@ -9,10 +10,13 @@
   var templatesPath = path.join(__dirname, "../", "templates/");
   var githubInterface = require('./github-interface.js').checkArgs(argv);
   var gitbookInteractive = require('./gitbook-interactive.js');
+  */
+
   const GitbookInquirer = require('./GitbookInquirer.js')
-  var asker = new GitbookInquirer();
+  const BookConfig = require('./BookConfig.js')
+  const BookCreator = require('./BookCreator.js')
 
-
+/*
   var Tacks = require('tacks')
   var Dir = Tacks.Dir
   var File = Tacks.File
@@ -20,14 +24,15 @@
   var wantedTemplate = {};
   var bookName = argv.n || "NoNameBook";
   var type = argv.t || "book";
+*/
   var help = argv.h != null || argv.help != null;
-
 
   /**
   * This method load the files into the wantedTemplate object
   * - basePath: is the path where it starts to search the wanted folder specified by the variable type
   * - inSubdirectory: is true when is looking inside the subfolders of the template.
   **/
+  /*
   function loadTemplates (basePath, inSubdirectory) {
     var filesInFolder = {};
     fs.readdirSync(basePath).forEach(function(file) {
@@ -53,7 +58,7 @@
     else
       return Dir(filesInFolder);
   }
-
+*/
 /*
   function exportTemplate () {
     wantedTemplate['package.json'] = File({
@@ -72,7 +77,6 @@
     bookConfig.createBook(bookInfo);
   }
 */
-  if (argv.i || argv.interactive) asker.ask();
 
 
   if (help || process.argv.length == 2) {
@@ -83,9 +87,8 @@
       console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
   else {
-  //  loadTemplates(path.join(templatesPath, type, "/"), false);
-    setTimeout(function () {
-  //    exportTemplate();
-    }, 1000);
+    var bookConfig = GitbookInquirer.ask();
+    var creator = new BookCreator(bookConfig);
+    creator.createBook();
   }
 })();
