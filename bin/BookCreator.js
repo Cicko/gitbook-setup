@@ -43,22 +43,22 @@ class BookCreator {
   loadFileSystem (basePath, inSubdirectory, callback) {
     var object = this;
     var filesInFolder = {};
-    fs.readdirSync(basePath).forEach(function(file) {
+    fs.readdirSync(basePath).forEach(function(file, num) {
       if (fs.lstatSync(basePath + file).isDirectory()) {
         var subDirectoryPath = path.join(basePath, file, '/');
         filesInFolder[file] = object.loadFileSystem(subDirectoryPath, true);
       }
       else if (fs.lstatSync(basePath + file).isFile()){
         var filePath = basePath + file;
-        fs.readFile(filePath, 'utf8', function (err,data) {
-          if (err) {
-            return console.log(err);
-          }
-          if (!inSubdirectory)
-            fileSystem[file] = File(data);
-          else
-            filesInFolder[file] = File(data);
-        });
+        var data = fs.readFileSync(filePath, 'utf8');
+        if (!inSubdirectory) {
+          fileSystem[file] = File(data);
+          console.log(file + " is final file");
+        }
+        else {
+          filesInFolder[file] = File(data);
+          console.log(file + " is file");
+        }
       }
     });
     if (!inSubdirectory) {// book folder root

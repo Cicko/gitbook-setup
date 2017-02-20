@@ -4,7 +4,6 @@
   var argv = require('minimist')(process.argv.slice(2));
 
   const GitbookInquirer = require('./GitbookInquirer.js')
-  const BookConfig = require('./BookConfig.js')
   const BookCreator = require('./BookCreator.js')
 
   var help = argv.h != null || argv.help != null;
