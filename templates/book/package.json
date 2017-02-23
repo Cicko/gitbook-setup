@@ -1,0 +1,14 @@
+{
+  "name": "gitbook-setup-template-book",
+  "version": "1.0.0",
+  "description": "gitbook-setup template for book",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rudolf Cicko",
+  "license": "ISC"
+}
