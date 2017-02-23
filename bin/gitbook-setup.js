@@ -33,7 +33,7 @@
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookCreator.getBookConfig());
       npm.load(function(err) {
-        npm.commands.install(['gitbook-setup-template-' + bookConfig.type], function(er, data) {
+        npm.commands.install(['gitbook-setup-template-' + bookConfig.type], {global: true}, function(er, data) {
           if (er) {
             console.log("Error during instalation of the template")
             console.log(er);
