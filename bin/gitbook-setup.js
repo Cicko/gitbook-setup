@@ -23,7 +23,7 @@
       console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
   else {
-    exec("npm root", function (err, out, code) {
+    exec("npm root -g", function (err, out, code) {
       if (err) console.log(err);
       else {
         modulesPath = out.replace(/(\r\n|\n|\r)/gm,"");
