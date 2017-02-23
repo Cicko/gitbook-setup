@@ -19,8 +19,8 @@ class BookCreator {
     return this.bookConfig;
   }
 
-  copyTemplateBookFolder () {
-    fs.copy(path.join(process.cwd(), 'node_modules', 'gitbook-setup-template-' + this.bookConfig.type), path.join(process.cwd(), this.bookConfig.name), err => {
+  copyTemplateBookFolder (modulesPath) {
+    fs.copy(path.join(modulesPath, 'gitbook-setup-template-' + this.bookConfig.type), path.join(process.cwd(), this.bookConfig.name), err => {
       if (err) return console.error(err)
       console.log('success!');
     });

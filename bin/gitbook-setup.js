@@ -3,6 +3,7 @@
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
   var npm = require('npm');
+  const exec = require('child_process').exec;
 
   const GitbookInquirer = require('./GitbookInquirer.js')
   const BookCreator = require('./BookCreator.js')
@@ -11,6 +12,7 @@
   var help = argv.h != null || argv.help != null;
   var noArgs = process.argv.length == 2;
   var bookCreator;
+  var modulesPath;
 
   if (help || noArgs) {
       console.log("Valid commands:");
@@ -20,22 +22,34 @@
       console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
   else {
+    exec("npm root", function (err, out, code) {
+      if (err) console.log(err);
+      else {
+        modulesPath = out;
+        modulesPath = nodePath.replace(/(\r\n|\n|\r)/gm,"");
+        console.log("Node Path is: " + modulesPath);
+      }
+    });
+
     GitbookInquirer.ask(function (bookConfig) {
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookCreator.getBookConfig());
       npm.load(function(err) {
-        npm.commands.install(['gitbook-setup-template-' + bookConfig.type], function(er, data) {
-          if (er)
+        npm.commands.install(['gitbook-setup-template-' + bookConfig.type, "g"], function(er, data) {
+          if (er) {
+            console.log("Error during instalation of the template")
             console.log(er);
+          }
           else {
-            console.log("instalation data:");
+            console.log("Correct instalation!!. Instalation data:");
             console.log(data);
-            console.log("finished installation")
-            bookCreator.copyTemplateBookFolder();
+            console.log("Finished installation");
+            bookCreator.copyTemplateBookFolder(modulesPath);
           }
         });
         npm.on('log', function(message) {
           // log installation progress
+          console.log("Instalation progress: ")
           console.log(message);
         });
       });
