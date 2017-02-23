@@ -20,11 +20,10 @@ class BookCreator {
   }
 
   copyTemplateBookFolder () {
-    fs.copy(process.cwd() + '/node_modules/gitbook-setup-template-' + this.bookConfig.type, __dirname, err => {
+    fs.copy('./node_modules/gitbook-setup-template-' + this.bookConfig.type, path.join(process.cwd(), this.bookConfig.name), err => {
       if (err) return console.error(err)
-
-      console.log('success!')
-    })
+      console.log('success!');
+    });
   }
 
   createPackageJson () {
