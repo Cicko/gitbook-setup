@@ -28,7 +28,8 @@
           if (er)
             console.log(er);
           else {
-            //console.log(data);
+            console.log("instalation data:");
+            console.log(data);
             console.log("finished installation")
             bookCreator.copyTemplateBookFolder();
           }

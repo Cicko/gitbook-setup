@@ -20,7 +20,7 @@ class BookCreator {
   }
 
   copyTemplateBookFolder () {
-    fs.copy(path.join(process.env.NODE_PATH, 'gitbook-setup-template-' + this.bookConfig.type), path.join(process.cwd(), this.bookConfig.name), err => {
+    fs.copy(path.join(process.cwd(), 'node_modules', 'gitbook-setup-template-' + this.bookConfig.type), path.join(process.cwd(), this.bookConfig.name), err => {
       if (err) return console.error(err)
       console.log('success!');
     });
