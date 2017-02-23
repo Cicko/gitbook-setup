@@ -26,7 +26,7 @@
     exec("npm root -g", function (err, out, code) {
       if (err) console.log(err);
       else {
-        modulesPath = out.replace(/(\r\n|\n|\r)/gm,"");
+        modulesPath = out.replace(/(\r\n|\n|\r)/gm,""); // remove the line break
       }
     });
 
