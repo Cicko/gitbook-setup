@@ -3,6 +3,7 @@
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
   var npm = require('npm');
+  var path = require('path');
   const exec = require('child_process').exec;
 
   const GitbookInquirer = require('./GitbookInquirer.js')
@@ -33,7 +34,7 @@
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookCreator.getBookConfig());
       npm.load(function(err) {
-        npm.commands.install(['gitbook-setup-template-' + bookConfig.type], {global: true}, function(er, data) {
+        npm.commands.install(path.join(npm.globalDir, '..'),['gitbook-setup-template-' + bookConfig.type], function(er, data) {
           if (er) {
             console.log("Error during instalation of the template")
             console.log(er);
