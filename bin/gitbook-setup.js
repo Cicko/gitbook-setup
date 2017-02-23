@@ -25,9 +25,7 @@
     exec("npm root", function (err, out, code) {
       if (err) console.log(err);
       else {
-        modulesPath = out;
-        modulesPath = nodePath.replace(/(\r\n|\n|\r)/gm,"");
-        console.log("Node Path is: " + modulesPath);
+        modulesPath = out.replace(/(\r\n|\n|\r)/gm,"");
       }
     });
 
