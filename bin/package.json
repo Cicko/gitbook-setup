@@ -1,0 +1,81 @@
+{
+  "_args": [
+    [
+      {
+        "name": "gitbook-setup-template-api",
+        "raw": "gitbook-setup-template-api",
+        "rawSpec": "",
+        "scope": null,
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/rudy/Escritorio/tfg/rudolf-cicko-17"
+    ]
+  ],
+  "_from": "gitbook-setup-template-api@latest",
+  "_id": "gitbook-setup-template-api@1.0.0",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/gitbook-setup-template-api",
+  "_nodeVersion": "6.9.5",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/gitbook-setup-template-api-1.0.0.tgz_1487789698218_0.6743310031015426"
+  },
+  "_npmUser": {
+    "email": "alu0100824780@ull.edu.es",
+    "name": "cicko"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "gitbook-setup-template-api",
+    "raw": "gitbook-setup-template-api",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/gitbook-setup-template-api/-/gitbook-setup-template-api-1.0.0.tgz",
+  "_shasum": "9ee846cf3e96a3aa066d029ca19ba4041501737c",
+  "_shrinkwrap": null,
+  "_spec": "gitbook-setup-template-api",
+  "_where": "/home/rudy/Escritorio/tfg/rudolf-cicko-17",
+  "author": {
+    "name": "Rudolf Cicko"
+  },
+  "dependencies": {},
+  "description": "This is a template book for the gitbook-setup package. Its loaded when user select a simple api template for a book",
+  "devDependencies": {},
+  "directories": {
+    "doc": "docs"
+  },
+  "dist": {
+    "shasum": "9ee846cf3e96a3aa066d029ca19ba4041501737c",
+    "tarball": "https://registry.npmjs.org/gitbook-setup-template-api/-/gitbook-setup-template-api-1.0.0.tgz"
+  },
+  "keywords": [
+    "gitbook-setup",
+    "gitbook",
+    "template",
+    "api"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "email": "alu0100824780@ull.edu.es",
+      "name": "cicko"
+    }
+  ],
+  "name": "gitbook-setup-template-api",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.0"
+}

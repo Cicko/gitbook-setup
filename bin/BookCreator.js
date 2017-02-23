@@ -1,5 +1,5 @@
 "use strict"
-var fs = require('fs');
+var fs = require('fs-extra');
 var path = require('path');
 var Tacks = require('tacks')
 var Dir = Tacks.Dir
@@ -15,60 +15,29 @@ class BookCreator {
     this.bookConfig = bookConfig;
   }
 
-  createBook () {
-      var object = this;
-      this.loadFileSystem(path.join(templatesPath, this.bookConfig.type, "/"), false, function () {
-        console.log("A exportar")
-        object.exportFileSystem();
-      });
+  getBookConfig () {
+    return this.bookConfig;
   }
 
-  exportFileSystem () {
+  copyTemplateBookFolder () {
+    fs.copy(process.cwd() + '/node_modules/gitbook-setup-template-' + this.bookConfig.type, __dirname, err => {
+      if (err) return console.error(err)
+
+      console.log('success!')
+    })
+  }
+
+  createPackageJson () {
     var bookConfig = this.bookConfig;
-    fileSystem['package.json'] = File({
-      author: bookConfig.author || process.env.USER,
-      name: bookConfig.name || "NoNameBook",
-      version: '0.0.1'
-    });
-    var template = new Tacks(Dir(fileSystem));
+    var template = new Tacks(Dir({
+      'package.json': File({
+        author: bookConfig.author || process.env.USER,
+        name: bookConfig.name || "NoNameBook",
+        version: '0.0.1'
+      })
+    }));
     var exportPath = path.join(process.cwd(), "/" , bookConfig.name);
     template.create(exportPath);
-  }
-
-  /**
-  * This method load the files into the this.fileSystem object
-  * - basePath: is the path where it starts to search the wanted folder specified by the variable type
-  * - inSubdirectory: is true when is looking inside the subfolders of the template.
-  **/
-  loadFileSystem (basePath, inSubdirectory, callback) {
-    var object = this;
-    var filesInFolder = {};
-    fs.readdirSync(basePath).forEach(function(file, num) {
-      if (fs.lstatSync(basePath + file).isDirectory()) {
-        var subDirectoryPath = path.join(basePath, file, '/');
-        filesInFolder[file] = object.loadFileSystem(subDirectoryPath, true);
-      }
-      else if (fs.lstatSync(basePath + file).isFile()){
-        var filePath = basePath + file;
-        var data = fs.readFileSync(filePath, 'utf8');
-        if (!inSubdirectory) {
-          fileSystem[file] = File(data);
-          console.log(file + " is final file");
-        }
-        else {
-          filesInFolder[file] = File(data);
-          console.log(file + " is file");
-        }
-      }
-    });
-    if (!inSubdirectory) {// book folder root
-      fileSystem = filesInFolder;
-      console.log("Final file system: ")
-      console.log(fileSystem);
-      callback();
-    }
-    else
-      return Dir(filesInFolder);
   }
 }
 

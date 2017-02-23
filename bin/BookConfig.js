@@ -13,6 +13,7 @@ var File = Tacks.File
 
 class BookConfig {
   static createFile (bookSpecs) {
+    this.bookSpecs = bookSpecs
     var file = new Tacks(Dir({
       '.config.book' : File(bookSpecs)
     }));

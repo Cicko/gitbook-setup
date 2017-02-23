@@ -1,0 +1,20 @@
+{
+  "name": "gitbook-setup-template-api",
+  "version": "1.0.0",
+  "description": "This is a template book for the gitbook-setup package. Its loaded when user select a simple api template for a book",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gitbook-setup",
+    "gitbook",
+    "template",
+    "api"
+  ],
+  "author": "Rudolf Cicko",
+  "license": "ISC"
+}

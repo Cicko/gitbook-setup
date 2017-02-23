@@ -1,0 +1,7 @@
+#!/bin/sh
+
+CMDDESC="Generate GitBook"
+
+./node_modules/.bin/gitbook build ./txt ./gh-pages
+
+var exec = require('child_process').exec, child;
