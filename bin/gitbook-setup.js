@@ -33,8 +33,10 @@
     GitbookInquirer.ask(function (bookConfig) {
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookCreator.getBookConfig());
+      console.log(bookConfig.templateName);
+      var moduleName = bookConfig.templateName ||  'gitbook-setup-template-' + bookConfig.type;
       npm.load(function(err) {
-        npm.commands.install(path.join(npm.globalDir, '..'),['gitbook-setup-template-' + bookConfig.type], function(er, data) {
+        npm.commands.install(path.join(npm.globalDir, '..'),[moduleName], function(er, data) {
           if (er) {
             console.log("Error during instalation of the template")
             console.log(er);

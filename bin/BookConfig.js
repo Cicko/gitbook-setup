@@ -15,7 +15,7 @@ class BookConfig {
   static createFile (bookSpecs) {
     this.bookSpecs = bookSpecs
     var file = new Tacks(Dir({
-      '.config.book' : File(bookSpecs)
+      '.config.book.json' : File(bookSpecs)
     }));
     var exportPath = path.join(process.cwd(), "/" , bookSpecs.name);
     file.create(exportPath);

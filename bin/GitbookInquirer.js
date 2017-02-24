@@ -20,8 +20,9 @@ class GitbookInquirer {
         type: 'list',
         name: 'type',
         message: 'What type of book you want to create?',
-        choices: ['Api', 'Book', 'Faq'],
+        choices: ['Api', 'Book', 'Faq', 'I want to use my own template'],
         filter: function (val) {
+          if (val == 'I want to use my own template') val = 'own';
           return val.toLowerCase();
         }
       },
@@ -31,6 +32,14 @@ class GitbookInquirer {
         message: 'What will be the main programming language? ',
         when: function (answers) {
           return answers.type == 'api';
+        }
+      },
+      {
+        type: 'input',
+        name: 'templateName',
+        message: 'Indicate your template url: ',
+        when: function (answers) {
+          return answers.type == 'own';
         }
       },
       {
@@ -48,7 +57,6 @@ class GitbookInquirer {
     inquirer.prompt(this.questions).then(function (answers) {
       console.log('\nYour book summary:');
       console.log(JSON.stringify(answers, null, '  '));
-      BookConfig.createFile(answers);
       callback(answers);
     });
   }
