@@ -37,7 +37,7 @@ class GitbookInquirer {
       {
         type: 'input',
         name: 'templateName',
-        message: 'Indicate your template url: ',
+        message: 'Indicate your template name (npm module name): ',
         when: function (answers) {
           return answers.type == 'own';
         }
