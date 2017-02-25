@@ -30,11 +30,16 @@
         modulesPath = out.replace(/(\r\n|\n|\r)/gm,""); // remove the line break
       }
     });
+    if (argv.login == 'github') {
+      var ghManager = new GithubManager();
+      ghManager.authenticate();
+    }
+    else {
+      createBook();
+    }
+  }
 
-    var ghManager = new GithubManager();
-    ghManager.authenticate();
-
-/*
+  function createBook () {
     GitbookInquirer.ask(function (bookConfig) {
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookCreator.getBookConfig());
@@ -60,8 +65,6 @@
         });
       });
     });
-
-    */
   }
 
 
