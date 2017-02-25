@@ -9,6 +9,7 @@
   const GitbookInquirer = require('./GitbookInquirer.js')
   const BookCreator = require('./BookCreator.js')
   const BookConfig = require('./BookConfig.js')
+  const GithubManager = require('./GithubManager.js')
 
   var help = argv.h != null || argv.help != null;
   var noArgs = process.argv.length == 2;
@@ -30,6 +31,10 @@
       }
     });
 
+    var ghManager = new GithubManager();
+    ghManager.authenticate();
+
+/*
     GitbookInquirer.ask(function (bookConfig) {
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookCreator.getBookConfig());
@@ -55,6 +60,8 @@
         });
       });
     });
+
+    */
   }
 
 

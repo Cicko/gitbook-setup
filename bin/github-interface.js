@@ -7,33 +7,33 @@
 
   function authenticate () {
         prompt.get([{
-        name: 'username',
-        required: true
-      }, {
-        name: 'password',
-        hidden: true,
-        conform: function (value) {
-          return true;
-        }
-      }], function (err, result) {
-        client = github.client({
-          username: result.username,
-          password: result.password
-        });
-        client.get('/user', {}, function (err, status, body, headers) {
-          if (err) {
-            console.log("Error happend authenticating user: " + err);
-            authenticate();
+          name: 'username',
+          required: true
+        }, {
+          name: 'password',
+          hidden: true,
+          conform: function (value) {
+            return true;
           }
-          else {
-            console.log("user authenticated correctly")
-            authenticated = true;
-            console.log(body);
-            ghme = client.me();
-            createRepo();
-          }
+        }], function (err, result) {
+          client = github.client({
+            username: result.username,
+            password: result.password
+          });
+          client.get('/user', {}, function (err, status, body, headers) {
+            if (err) {
+              console.log("Error happend authenticating user: " + err);
+              authenticate();
+            }
+            else {
+              console.log("user authenticated correctly")
+              authenticated = true;
+              console.log(body);
+              ghme = client.me();
+              createRepo();
+            }
+          });
         });
-      });
   }
 
 

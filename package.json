@@ -28,13 +28,16 @@
     }
   ],
   "dependencies": {
+    "bluebird": "^3.4.7",
     "contributor": "0.1.x",
     "exec": "^0.2.1",
     "fs-extra": "^2.0.0",
     "fs-promise": "^2.0.0",
     "gitbook": "^3.2.2",
+    "github": "^9.0.0",
     "inquirer": "^3.0.1",
     "minimist": "^1.2.0",
+    "node-github": "0.0.3",
     "octonode": "^0.7.9",
     "path": "^0.12.7",
     "promise": "^7.1.1",
