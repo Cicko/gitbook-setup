@@ -1,7 +1,0 @@
-{
-  "plugins": ["exercises"],
-  "root": "./txt",
-  "description": "Este libro es la memoria de mi Trabajo de Fin de Grado dirigido por Casiano Rodríguez León.",
-  "author": "Rudolf Cicko",
-  "title": "Memoria TFG de Rudolf Cicko"
-}
