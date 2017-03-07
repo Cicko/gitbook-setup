@@ -13,29 +13,40 @@
 
   var help = argv.h != null || argv.help != null;
   var noArgs = process.argv.length == 2;
+  var numArgs = process.argv.length - 2;
   var bookCreator;
   var modulesPath;
+  var ghManager = new GithubManager();
 
   if (help || noArgs) {
-      console.log("Valid commands:");
-      console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
-      console.log("gitbook-setup --login=github                        --> Login on github");
-      console.log("gitbook-setup -i | --interactive                    --> create book in interactive form");
-      console.log("gitbook-setup -h | --help                           --> Show available commands");
+    showHelp();
   }
   else {
-    exec("npm root -g", function (err, out, code) {
-      if (err) console.log(err);
-      else {
-        modulesPath = out.replace(/(\r\n|\n|\r)/gm,""); // remove the line break
+    loadModulesPath ();
+    var argv = process.argv;
+    for (var i = 0; i < numArgs; i++) {
+      console.log(argv[i + 2]);
+      switch (argv[i + 2]) {
+        case '-i':
+          console.log("Interactive");
+          createBook();
+          break;
+        case '--login=github':
+          console.log("Login github");
+          loginOnGithub();
+          break;
       }
-    });
-    if (argv.login == 'github') {
-      var ghManager = new GithubManager();
-      ghManager.authenticate();
+    }
+  }
+
+  function loginOnGithub () {
+    if (bookCreator) {
+      ghManager.authenticate(function (token) {
+        ghManager.createTokenFile(token);
+      });
     }
     else {
-      createBook();
+      console.log("you have to initialize book first");
     }
   }
 
@@ -65,6 +76,23 @@
         });
       });
     });
+  }
+
+  function loadModulesPath () {
+    exec("npm root -g", function (err, out, code) {
+      if (err) console.log(err);
+      else {
+        modulesPath = out.replace(/(\r\n|\n|\r)/gm,""); // remove the line break
+      }
+    });
+  }
+
+  function showHelp () {
+    console.log("Valid commands:");
+    console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
+    console.log("gitbook-setup --login=github                        --> Login on github");
+    console.log("gitbook-setup -i | --interactive                    --> create book in interactive form");
+    console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
 
 
