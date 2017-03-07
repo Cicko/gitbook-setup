@@ -6,10 +6,10 @@
   var path = require('path');
   const exec = require('child_process').exec;
 
-  const GitbookInquirer = require('./GitbookInquirer.js')
-  const BookCreator = require('./BookCreator.js')
-  const BookConfig = require('./BookConfig.js')
-  const GithubManager = require('./GithubManager.js')
+  const GitbookInquirer = require('../lib/GitbookInquirer.js')
+  const BookCreator = require('../lib/BookCreator.js')
+  const BookConfig = require('../lib/BookConfig.js')
+  const GithubManager = require('../lib/GithubManager.js')
 
   var help = argv.h != null || argv.help != null;
   var noArgs = process.argv.length == 2;
