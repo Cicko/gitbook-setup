@@ -10,6 +10,7 @@
   const BookCreator = require('../lib/BookCreator.js')
   const BookConfig = require('../lib/BookConfig.js')
   const GithubManager = require('../lib/GithubManager.js')
+  const GulpfileCreator = require('../lib/GulpfileCreator.js')
 
   var help = argv.h != null || argv.help != null;
   var noArgs = process.argv.length == 2;
@@ -28,11 +29,11 @@
       console.log(argv[i + 2]);
       switch (argv[i + 2]) {
         case '-i':
-          console.log("Interactive");
+          //console.log("Interactive");
           createBook();
           break;
         case '--login=github':
-          console.log("Login github");
+          //console.log("Login github");
           loginOnGithub();
           break;
       }
@@ -53,8 +54,7 @@
   function createBook () {
     GitbookInquirer.ask(function (bookConfig) {
       bookCreator = new BookCreator(bookConfig);
-      BookConfig.createFile(bookCreator.getBookConfig());
-      console.log(bookConfig.templateName);
+      BookConfig.createFile(bookConfig);
       var moduleName = bookConfig.templateName ||  'gitbook-setup-template-' + bookConfig.type;
       npm.load(function(err) {
         npm.commands.install(path.join(npm.globalDir, '..'),[moduleName], function(er, data) {
@@ -90,7 +90,7 @@
   function showHelp () {
     console.log("Valid commands:");
     console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
-    console.log("gitbook-setup --login=github                        --> Login on github");
+    //console.log("gitbook-setup --login=github                        --> Login on github");
     console.log("gitbook-setup -i | --interactive                    --> create book in interactive form");
     console.log("gitbook-setup -h | --help                           --> Show available commands");
   }
