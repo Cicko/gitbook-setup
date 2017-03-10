@@ -67,6 +67,7 @@
             console.log(data);
             console.log("Finished installation");
             bookCreator.copyTemplateBookFolder(modulesPath);
+            GulpfileCreator.createGulpfile(bookConfig);
           }
         });
         npm.on('log', function(message) {
