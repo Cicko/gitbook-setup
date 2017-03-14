@@ -89,6 +89,11 @@
   }
 
   function showHelp () {
+    try {
+      console.log(require.resolve("mochaee"));
+    } catch(e) {
+      console.error("Mochaee is not found");
+    }
     console.log("Valid commands:");
     console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
     //console.log("gitbook-setup --login=github                        --> Login on github");
