@@ -5,6 +5,7 @@
   var npm = require('npm');
   var path = require('path');
   const exec = require('child_process').exec;
+  var Promise = require('promise');
 
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
   const BookCreator = require('../lib/BookCreator.js')
@@ -66,8 +67,9 @@
             console.log("Correct instalation!!. Instalation data:");
             console.log(data);
             console.log("Finished installation");
-            bookCreator.copyTemplateBookFolder(modulesPath);
-            bookCreator.createPackageJson();
+            bookCreator.copyTemplateBookFolder(modulesPath, () => {
+              bookCreator.createPackageJson();
+            });
             GulpfileCreator.createGulpfile(bookConfig);
           }
         });
@@ -90,11 +92,6 @@
   }
 
   function showHelp () {
-    try {
-      console.log(require.resolve("mochaee"));
-    } catch(e) {
-      console.error("Mochaee is not found");
-    }
     console.log("Valid commands:");
     console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
     //console.log("gitbook-setup --login=github                        --> Login on github");
