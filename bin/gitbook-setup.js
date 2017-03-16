@@ -24,7 +24,6 @@
     showHelp();
   }
   else {
-    loadModulesPath ();
     var argv = process.argv;
     for (var i = 0; i < numArgs; i++) {
       console.log(argv[i + 2]);
@@ -56,7 +55,7 @@
     GitbookInquirer.ask(function (bookConfig) {
       bookCreator = new BookCreator(bookConfig);
       BookConfig.createFile(bookConfig);
-      var moduleName = bookConfig.templateName ||  'gitbook-setup-template-' + bookConfig.type;
+      var moduleName = bookConfig.templateName || 'gitbook-setup-template-' + bookConfig.type;
       npm.load(function(err) {
         npm.commands.install(path.join(npm.globalDir, '..'),[moduleName], function(er, data) {
           if (er) {
@@ -64,32 +63,17 @@
             console.log(er);
           }
           else {
-            console.log("Correct instalation!!. Instalation data:");
-            console.log(data);
-            console.log("Finished installation");
-            bookCreator.copyTemplateBookFolder(modulesPath, () => {
+            console.log("Installed ", moduleName);
+            bookCreator.copyTemplateBookFolder(() => {
               bookCreator.createPackageJson();
             });
             GulpfileCreator.createGulpfile(bookConfig);
           }
         });
-        npm.on('log', function(message) {
-          // log installation progress
-          console.log("Instalation progress: ")
-          console.log(message);
-        });
       });
     });
   }
 
-  function loadModulesPath () {
-    exec("npm root -g", function (err, out, code) {
-      if (err) console.log(err);
-      else {
-        modulesPath = out.replace(/(\r\n|\n|\r)/gm,""); // remove the line break
-      }
-    });
-  }
 
   function showHelp () {
     console.log("Valid commands:");
