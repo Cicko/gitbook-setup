@@ -26,7 +26,6 @@
   else {
     var argv = process.argv;
     for (var i = 0; i < numArgs; i++) {
-      console.log(argv[i + 2]);
       switch (argv[i + 2]) {
         case '-i':
           //console.log("Interactive");
