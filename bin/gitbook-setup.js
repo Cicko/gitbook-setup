@@ -13,30 +13,29 @@
   const GithubManager = require('../lib/GithubManager.js')
   const GulpfileCreator = require('../lib/GulpfileCreator.js')
 
-  var help = argv.h != null || argv.help != null;
+  const GREEN = "\x1b[32m";
+  const RED = "\x1b[31m";
+  const BLUE = "\x1b[36m";
+  const RESET_FONT = "\x1b[0m";
+
+
+
+  var help = argv.h || argv.help;
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
+
   var bookCreator;
   var modulesPath;
   var ghManager = new GithubManager();
 
-  if (help || noArgs) {
-    showHelp();
-  }
+  console.log(argv);
+
+  // The execution of the program starts here
+  if (noArgs || help)
+    showHelp(argv._);
   else {
-    var argv = process.argv;
-    for (var i = 0; i < numArgs; i++) {
-      switch (argv[i + 2]) {
-        case '-i':
-          //console.log("Interactive");
-          createBook();
-          break;
-        case '--login=github':
-          //console.log("Login github");
-          loginOnGithub();
-          break;
-      }
-    }
+    if (argv.i)
+      createBook();
   }
 
   function loginOnGithub () {
@@ -74,12 +73,41 @@
   }
 
 
-  function showHelp () {
-    console.log("Valid commands:");
-    console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq]  --> Create book by args");
-    //console.log("gitbook-setup --login=github                        --> Login on github");
-    console.log("gitbook-setup -i | --interactive                    --> create book in interactive form");
-    console.log("gitbook-setup -h | --help                           --> Show available commands");
+  function showHelp (concrete) {
+    if (!concrete) {
+      console.log("Valid commands:");
+      console.log("gitbook-setup -n [BOOK NAME] -t [api | book | faq | own]  --> Create book by args");
+      //console.log("gitbook-setup --login=github                        --> Login on github");
+      console.log("gitbook-setup -i | --interactive                    --> create book in interactive form");
+      console.log("gitbook-setup -h | --help                           --> Show available commands");
+    }
+    else {
+      if (concrete == "create") {
+        console.log("This command allows you to create a book. You have three different options: ");
+        console.log();
+        console.log("- Passing all configuration as arguments");
+        console.log(BLUE,"    $gitbook-setup create --args -n [BOOK NAME] -t [api | book | faq | own:link] -d [heroku | gh-pages | own:link] -a [AUTHOR\\S] -i [DESCRIPTION]");
+        console.log(RESET_FONT);
+        console.log("Where: ")
+        console.log("  -n    ---> The name of the book");
+        console.log("  -t    ---> The type of the book. You can use 'own' template and after it will ask you for a link");
+        console.log("  -d    ---> Where you want to deploy. You can indicate more at one separating them by commas: -d heroku,gh-pages,own:link.");
+        console.log("  -a    ---> Author\\s of the book ");
+        console.log("  -i    ---> The description of the book");
+        console.log(RED,"       #Example:");
+        console.log(GREEN,"       $gitbook-setup create --args -n MyBook -t api -d heroku,own:http://pepsi.cola/ -a 'Casiano Rodriguez Leon, Rudolf Cicko' -i 'beautiful book about c++'");
+        console.log(RESET_FONT);
+        console.log("- In interactive form");
+        console.log(BLUE,"    $gitbook-setup create --interactive");
+        console.log(RESET_FONT);
+        console.log("- Getting configuration from file (in JSON form)");
+        console.log(BLUE,"    $gitbook-setup create --file");
+        console.log(RESET_FONT);
+      }
+      else {
+        console.log("Help about other thing");
+      }
+    }
   }
 
 
