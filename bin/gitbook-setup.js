@@ -56,7 +56,9 @@
         "name": args.n || "NoNameBook",
         "type": args.t.includes("own")? args.t.substr(0,3) : args.t || "book",
         "templateName": args.t.includes("own")? args.t.substr(4) : "",
-        "deploy" : args.d.split(",")
+        "deploy": args.d.split(","),
+        "description": args.i,
+        "authors": args.a
       }
       console.log(JSON.stringify(bookConfig,null, '  '));
     }
