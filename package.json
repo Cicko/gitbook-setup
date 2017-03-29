@@ -28,6 +28,7 @@
     }
   ],
   "dependencies": {
+    "async": "^2.2.0",
     "bluebird": "^3.4.7",
     "contributor": "0.1.x",
     "exec": "^0.2.1",

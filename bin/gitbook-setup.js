@@ -6,6 +6,7 @@
   var path = require('path');
   const exec = require('child_process').exec;
   var Promise = require('promise');
+  var Async = require('async');
 
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
   const BookCreator = require('../lib/BookCreator.js')
@@ -13,14 +14,10 @@
   const GithubManager = require('../lib/GithubManager.js')
   const GulpfileCreator = require('../lib/GulpfileCreator.js')
   const TheHelper = require('../lib/TheHelper.js')
+  const DeployManager = require('../lib/DeployManager.js')
+  const PackageJsonManager = require('../lib/PackageJsonManager.js')
 
 
-  // FONT COLORS
-  const GREEN = "\x1b[32m";
-  const RED = "\x1b[31m";
-  const BLUE = "\x1b[36m";
-  const YELLOW = "\x1b[33m";
-  const RESET_FONT = "\x1b[0m";
 
 
   var noArgs = process.argv.length == 2;
@@ -29,8 +26,6 @@
   var bookCreator;
   var modulesPath;
   var ghManager = new GithubManager();
-
-
 
   function loginOnGithub () {
     if (bookCreator) {
@@ -47,11 +42,11 @@
     if (args._.includes("args")) {
       var bookConfig = {
         "name": args.n || "NoNameBook",
-        "type": args.t.includes("own")? args.t.substr(0,3) : args.t || "book",
-        "templateName": args.t.includes("own")? args.t.substr(4) : "",
-        "deploy": args.d.split(","),
-        "description": args.i,
-        "authors": args.a.split(", ")
+        "type": args.t? (args.t.includes("own")? args.t.substr(0,3) : args.t) : "book",
+        "templateName": (args.t && args.t.includes("own"))? args.t.substr(4) : "",
+        "deploys": args.d? args.d.split(",") : new Array(),
+        "description": args.i || "No Description about " + (args.n || "NoNameBook"),
+        "authors": args.a? args.a.split(", ") : new Array(process.env.USER)
       }
       console.log(JSON.stringify(bookConfig,null, '  '));
       createBookByBookConfig(bookConfig);
@@ -72,7 +67,6 @@
   }
 
   function createBookByBookConfig (bookConfig) {
-    bookCreator = new BookCreator(bookConfig);
     BookConfig.createFile(bookConfig);
     var moduleName = bookConfig.templateName || 'gitbook-setup-template-' + bookConfig.type;
     npm.load(function(err) {
@@ -83,10 +77,25 @@
         }
         else {
           console.log("Installed ", moduleName);
-          bookCreator.copyTemplateBookFolder(() => {
-            bookCreator.createPackageJson();
-          });
-          GulpfileCreator.createGulpfile(bookConfig);
+          Async.series([
+            function(callback) {
+              GulpfileCreator.createGulpfile(bookConfig)
+              console.log("Created gulpfile");
+              callback(null, 1);
+            },
+            function (callback) {
+              DeployManager.setup(function () {
+                console.log("Setup deployment")
+                callback(null, 2);
+              })
+            },
+            function (callback) {
+              BookCreator.copyTemplateBook(() => {
+                PackageJsonManager.createPackageJson();
+                callback(null, 3)
+              })
+            }
+          ]);
         }
       });
     });
