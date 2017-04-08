@@ -1,0 +1,7 @@
+#!/bin/sh
+
+CMDDESC="Deploy GitBook on Github"
+
+REPO=$(node -e "console.log(require('./package.json').repository.url);")
+
+node -e "require('gh-pages').publish('./gh-pages', { repo: '$REPO', logger: function(m) { console.error(m); } });"
