@@ -118,6 +118,12 @@
     if (argv._.includes("create"))
       createBook(argv);
     else if (argv._.includes("deploy"));
+    else if (argv._.includes("version") || argv.version || argv.v) {
+      exec("npm -global list | grep gitbook-setup@", function (err, out) {
+        console.log(out);
+      });
+    }
+
   }
 
 

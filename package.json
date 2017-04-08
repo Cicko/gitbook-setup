@@ -39,6 +39,7 @@
     "github": "^9.0.0",
     "gulp-gh-pages": "^0.5.4",
     "inquirer": "^3.0.1",
+    "jquery": "^3.2.1",
     "minimist": "^1.2.0",
     "node-github": "0.0.3",
     "octonode": "^0.7.9",
