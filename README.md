@@ -7,23 +7,14 @@ To install the package you have to return
 > npm install -g gitbook-setup
 ```
 
-You have it to install it globally (-g option) if you want to execute the program directly on the console.
-If you want to create a book you just have to execute:
+You have it to install it globally (-g option) if you want to execute the program directly on the console. To see
+how to execute the command you have just to run:
 
 ```bash
-> gitbook-setup -n [BOOK NAME] -t [TYPE]
+> gitbook-setup [help]
 ```
 
-where
-- BOOK NAME: is the name of your book
-- TYPE: is the type of book where it can be:
-  - api
-  - book
-  - faq
-  - Your own book specification. so in this field you have to indicate the book folder root name.
-
-An example of a command to create an api book named *"documentacion de C++14"* will be:
-
-```bash
-> gitbook-setup -n "Documentacion de C++14" -t api
-```
+You have now three options for creating a book:
+ - Passing book configuration through arguments.
+ - Giving a file with the whole configuration.
+ - In interactive form. The program will ask you for all information.

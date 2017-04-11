@@ -84,10 +84,14 @@
               callback(null, 1);
             },
             function (callback) {
-              DeployManager.setup(function () {
-                console.log("Setup deployment")
+              if (bookConfig.deploys.length > 0) {
+                DeployManager.setup(function () {
+                  console.log("Setup deployment")
+                  callback(null, 2);
+                })
+              }
+              else
                 callback(null, 2);
-              })
             },
             function (callback) {
               BookCreator.copyTemplateBook(() => {
@@ -119,12 +123,9 @@
       createBook(argv);
     else if (argv._.includes("deploy"));
     else if (argv._.includes("version") || argv.version || argv.v) {
-      exec("npm -global list | grep gitbook-setup@", function (err, out) {
+      process.exec("more ../package.json | grep version", function (err, out) {
         console.log(out);
       });
     }
-
   }
-
-
 })();
