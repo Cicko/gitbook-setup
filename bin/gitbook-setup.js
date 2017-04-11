@@ -16,9 +16,7 @@
   const TheHelper = require('../lib/TheHelper.js')
   const DeployManager = require('../lib/DeployManager.js')
   const PackageJsonManager = require('../lib/PackageJsonManager.js')
-
-
-
+  const COLORS = require('../lib/helpers/ShellColors.js')
 
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
@@ -52,7 +50,7 @@
       createBookByBookConfig(bookConfig);
     }
     else if (args._.includes("file")) {
-      ;
+      console.log("This option is under construction.");
     }
     else if (args._.includes("interactive")) {
       GitbookInquirer.ask(function (bookConfig) {
@@ -123,8 +121,11 @@
       createBook(argv);
     else if (argv._.includes("deploy"));
     else if (argv._.includes("version") || argv.version || argv.v) {
-      process.exec("more ../package.json | grep version", function (err, out) {
-        console.log(out);
+      exec("npm version | grep gitbook-setup", function (err, out, code) {
+        out = out.match(/([0-9]|\.)+/);
+        console.log();
+        console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, out[0], COLORS.DEFAULT);
+        console.log();
       });
     }
   }

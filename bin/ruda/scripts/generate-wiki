@@ -1,0 +1,5 @@
+#!/bin/sh
+
+CMDDESC="Generate Wiki"
+
+node "$(dirname $0)/generate-wiki.js"
