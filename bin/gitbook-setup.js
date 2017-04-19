@@ -17,6 +17,7 @@
   const DeployManager = require('../lib/DeployManager.js')
   const PackageJsonManager = require('../lib/PackageJsonManager.js')
   const COLORS = require('../lib/helpers/ShellColors.js')
+  const Json = require('../lib/helpers/Json.js');
 
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
@@ -78,13 +79,11 @@
           Async.series([
             function(callback) {
               GulpfileCreator.createGulpfile(bookConfig)
-              console.log("Created gulpfile");
               callback(null, 1);
             },
             function (callback) {
               if (bookConfig.deploys.length > 0) {
                 DeployManager.setup(function () {
-                  console.log("Setup deployment")
                   callback(null, 2);
                 })
               }
@@ -96,6 +95,11 @@
                 PackageJsonManager.createPackageJson();
                 callback(null, 3)
               })
+            },
+            function (callback) {
+              BookCreator.writeToBookJson(() => {
+                callback(null, 4);
+              });
             }
           ]);
         }
@@ -113,7 +117,6 @@
         TheHelper.showGeneralHelp();
   }
 
-  // The execution of the program starts here
   if (argv._.includes("help") || noArgs)
     showHelp(argv._);
   else {
