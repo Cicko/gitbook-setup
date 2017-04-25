@@ -117,6 +117,15 @@
         TheHelper.showGeneralHelp();
   }
 
+  function showVersion () {
+    exec("npm version | grep gitbook-setup", function (err, out, code) {
+      out = out.match(/([0-9]|\.)+/);
+      console.log();
+      console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, out[0], COLORS.DEFAULT);
+      console.log();
+    });
+  }
+
 
   // Execution starts here
 
@@ -127,12 +136,7 @@
       createBook(argv);
     else if (argv._.includes("deploy"));
     else if (argv._.includes("version") || argv.version || argv.v) {
-      exec("npm version | grep gitbook-setup", function (err, out, code) {
-        out = out.match(/([0-9]|\.)+/);
-        console.log();
-        console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, out[0], COLORS.DEFAULT);
-        console.log();
-      });
+      showVersion();
     }
   }
 })();
