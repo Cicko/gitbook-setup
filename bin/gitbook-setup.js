@@ -117,6 +117,9 @@
         TheHelper.showGeneralHelp();
   }
 
+
+  // Execution starts here
+
   if (argv._.includes("help") || noArgs)
     showHelp(argv._);
   else {
