@@ -11,20 +11,22 @@
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
   const BookCreator = require('../lib/BookCreator.js')
   const BookConfig = require('../lib/BookConfig.js')
-  const GithubManager = require('../lib/GithubManager.js')
+//  const GithubManager = require('../lib/GithubManager.js')
   const GulpfileCreator = require('../lib/GulpfileCreator.js')
   const TheHelper = require('../lib/TheHelper.js')
   const DeployManager = require('../lib/DeployManager.js')
   const PackageJsonManager = require('../lib/PackageJsonManager.js')
   const COLORS = require('../lib/helpers/ShellColors.js')
   const Json = require('../lib/helpers/Json.js');
+  const DependenciesManager = require('../lib/DependenciesManager.js')
+
 
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
 
   var bookCreator;
   var modulesPath;
-  var ghManager = new GithubManager();
+  //var ghManager = new GithubManager();
 
   function loginOnGithub () {
     if (bookCreator) {
@@ -67,7 +69,7 @@
 
   function createBookByBookConfig (bookConfig) {
     BookConfig.createFile(bookConfig);
-    var moduleName = bookConfig.templateName || 'gitbook-setup-template-' + bookConfig.type;
+    /*var moduleName = bookConfig.templateName || 'gitbook-setup-template-' + bookConfig.type;
     npm.load(function(err) {
       npm.commands.install(path.join(npm.globalDir, '..'),[moduleName], function(er, data) {
         if (er) {
@@ -104,6 +106,28 @@
           ]);
         }
       });
+    });
+    */
+    fillDependenciesFile(bookConfig, function() {
+      GulpfileCreator.createGulpfile(bookConfig)
+      PackageJsonManager.createPackageJson(function () {
+        BookCreator.writeToBookJson(function () {
+
+        });
+      });
+    });
+  }
+
+  // This function fill the dependencies.json file to contain all dependencies for template and deployments that will be pushed to package.json
+  function fillDependenciesFile (answers, callback) {
+      DependenciesManager.addDependency('gitbook-setup-template-' + (answers.templateName || answers.type));
+    if (answers.deploys.length > 0) {
+      answers.deploys.forEach(function (element) {
+          DependenciesManager.addDependency('gitbook-setup-deploy-' + element);
+      });
+    }
+    DependenciesManager.createDependenciesFile(function() {
+      callback();
     });
   }
 
