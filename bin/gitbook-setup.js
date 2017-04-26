@@ -65,66 +65,11 @@
   }
 
   function createBookByBookConfig (bookConfig) {
-
-    bookConfig.deploys = bookConfig.deploys.map(function (deploy) {
-      if (deploy.includes('own')) {
-        console.log(deploy + " incluye own")
-        var i = deploy.indexOf('own');
-        if (i != -1)
-          return deploy.substr(4);
-      }
-      return deploy;
-    })
-
-    console.log(bookConfig);
-
     BookConfig.createFile(bookConfig);
-
-
-    /*var moduleName = bookConfig.templateName || 'gitbook-setup-template-' + bookConfig.type;
-    npm.load(function(err) {
-      npm.commands.install(path.join(npm.globalDir, '..'),[moduleName], function(er, data) {
-        if (er) {
-          console.log("Error during instalation of the template")
-          console.log(er);
-        }
-        else {
-          console.log("Installed ", moduleName);
-          Async.series([
-            function(callback) {
-              GulpfileCreator.createGulpfile(bookConfig)
-              callback(null, 1);
-            },
-            function (callback) {
-              if (bookConfig.deploys.length > 0) {
-                DeployManager.setup(function () {
-                  callback(null, 2);
-                })
-              }
-              else
-                callback(null, 2);
-            },
-            function (callback) {
-              BookCreator.copyTemplateBook(() => {
-                PackageJsonManager.createPackageJson();
-                callback(null, 3)
-              })
-            },
-            function (callback) {
-              BookCreator.writeToBookJson(() => {
-                callback(null, 4);
-              });
-            }
-          ]);
-        }
-      });
-    });
-    */
     fillDependenciesFile(bookConfig, function() {
       GulpfileCreator.createGulpfile(bookConfig)
       PackageJsonManager.createPackageJson(function () {
         BookCreator.writeToBookJson(function () {
-
         });
       });
     });
@@ -132,15 +77,16 @@
 
   // This function fill the dependencies.json file to contain all dependencies for template and deployments that will be pushed to package.json
   function fillDependenciesFile (answers, callback) {
-      DependenciesManager.addDependency('gitbook-setup-template-' + (answers.templateName || answers.type));
+    DependenciesManager.addDependency('gitbook-setup-template-' + (answers.templateName || answers.type));
     if (answers.deploys.length > 0) {
-      answers.deploys.forEach(function (element) {
+      answers.deploys.forEach(function (element, i, array) {
           DependenciesManager.addDependency('gitbook-setup-deploy-' + element);
+          if (i == array.length - 1)
+            DependenciesManager.createDependenciesFile(function() {
+              callback();
+            });
       });
     }
-    DependenciesManager.createDependenciesFile(function() {
-      callback();
-    });
   }
 
 
