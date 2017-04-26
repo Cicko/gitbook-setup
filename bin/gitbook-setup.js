@@ -101,6 +101,7 @@
 
   function showVersion () {
     exec("npm version | grep gitbook-setup", function (err, out, code) {
+      console.log(out);
       out = out.match(/([0-9]|\.)+/);
       console.log();
       console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, out[0], COLORS.DEFAULT);
