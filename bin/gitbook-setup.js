@@ -6,6 +6,7 @@
   var path = require('path');
   const exec = require('child_process').exec;
   var Promise = require('promise');
+  var fs = require('fs-extra')
   var Async = require('async');
 
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
@@ -69,6 +70,7 @@
     createDependenciesFile(bookConfig, function() {
       GulpfileCreator.createGulpfile(bookConfig)
       PackageJsonManager.createPackageJson(function () {
+        fs.unlink('../dependencies.json');
         BookCreator.writeToBookJson(function () {
           console.log(Json.getFromFile("book.json"));
         });

@@ -1,0 +1,12 @@
+{
+	"name": "Santiso",
+	"type": "book",
+	"deploys": [
+		"heroku",
+		"pupaso"
+	],
+	"description": "",
+	"authors": [
+		"rudy"
+	]
+}
