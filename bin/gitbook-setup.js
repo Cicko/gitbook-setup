@@ -98,6 +98,8 @@
         TheHelper.showCreateHelp();
       else if (concrete.includes("deploy"))
         TheHelper.showDeployHelp();
+      else if (concrete.includes("install"))
+        TheHelper.showInstallHelp();
       else
         TheHelper.showGeneralHelp();
   }
@@ -120,6 +122,13 @@
     if (argv._.includes("create"))
       createBook(argv);
     else if (argv._.includes("deploy"));
+    else if (argv._.includes("install")) {
+      if (fs.existsSync("book.json") && fs.existsSync("package.json"))
+        exec("npm install");
+      else {
+        console.log(COLORS.RED, "THIS IS NOT A GITBOOK-SETUP PROJECT. PLEASE FIRST CREATE A PROJECT AND THEN EXECUTE THIS COMMAND INSIDE IT. EXECUTE ", COLORS.YELLOW, " gitbook-setup install help", COLORS.RED, " TO SEE MORE INFORMATION. ", COLORS.DEFAULT);
+      }
+    }
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
