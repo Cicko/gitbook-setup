@@ -24,10 +24,8 @@
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
 
-  var bookCreator;
-  var modulesPath;
-  //var ghManager = new GithubManager();
 
+  //var ghManager = new GithubManager();
   function loginOnGithub () {
     if (bookCreator) {
       ghManager.authenticate(function (token) {
@@ -49,7 +47,6 @@
         "description": args.i || "No Description about " + (args.n || "NoNameBook"),
         "authors": args.a? args.a.split(", ") : new Array(process.env.USER)
       }
-      console.log(JSON.stringify(bookConfig,null, '  '));
       createBookByBookConfig(bookConfig);
     }
     else if (args._.includes("file")) {
@@ -68,7 +65,22 @@
   }
 
   function createBookByBookConfig (bookConfig) {
+
+    bookConfig.deploys = bookConfig.deploys.map(function (deploy) {
+      if (deploy.includes('own')) {
+        console.log(deploy + " incluye own")
+        var i = deploy.indexOf('own');
+        if (i != -1)
+          return deploy.substr(4);
+      }
+      return deploy;
+    })
+
+    console.log(bookConfig);
+
     BookConfig.createFile(bookConfig);
+
+
     /*var moduleName = bookConfig.templateName || 'gitbook-setup-template-' + bookConfig.type;
     npm.load(function(err) {
       npm.commands.install(path.join(npm.globalDir, '..'),[moduleName], function(er, data) {
