@@ -66,17 +66,18 @@
 
   function createBookByBookConfig (bookConfig) {
     BookConfig.createFile(bookConfig);
-    fillDependenciesFile(bookConfig, function() {
+    createDependenciesFile(bookConfig, function() {
       GulpfileCreator.createGulpfile(bookConfig)
       PackageJsonManager.createPackageJson(function () {
         BookCreator.writeToBookJson(function () {
+          console.log(Json.getFromFile("book.json"));
         });
       });
     });
   }
 
   // This function fill the dependencies.json file to contain all dependencies for template and deployments that will be pushed to package.json
-  function fillDependenciesFile (answers, callback) {
+  function createDependenciesFile (answers, callback) {
     DependenciesManager.addDependency('gitbook-setup-template-' + (answers.templateName || answers.type));
     if (answers.deploys.length > 0) {
       answers.deploys.forEach(function (element, i, array) {
@@ -103,7 +104,6 @@
     exec("npm version | grep gitbook-setup", function (err, out, code) {
       console.log(out);
       out = out.match(/([0-9]|\.)+/);
-      console.log();
       console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, out[0], COLORS.DEFAULT);
       console.log();
     });
