@@ -1,0 +1,10 @@
+{
+	"author": "rudy",
+	"name": "librito",
+	"version": "0.0.1",
+	"description": "No Description about librito",
+	"dependencies": [
+		"gitbook-setup-template-book",
+		"gitbook-setup-deploy-heroku"
+	]
+}

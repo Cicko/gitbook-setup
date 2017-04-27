@@ -42,6 +42,7 @@
     "javascript-stringify": "^1.6.0",
     "jquery": "^3.2.1",
     "minimist": "^1.2.0",
+    "ncp": "^2.0.0",
     "node-github": "0.0.3",
     "octonode": "^0.7.9",
     "path": "^0.12.7",
