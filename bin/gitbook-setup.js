@@ -8,6 +8,7 @@
   var Promise = require('promise');
   var fs = require('fs-extra')
   var Async = require('async');
+  var version = require('../package.json').version;
 
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
   const BookCreator = require('../lib/BookCreator.js')
@@ -106,12 +107,7 @@
   }
 
   function showVersion () {
-    exec("npm version | grep gitbook-setup", function (err, out, code) {
-      console.log(out);
-      out = out.match(/([0-9]|\.)+/);
-      console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, out[0], COLORS.DEFAULT);
-      console.log();
-    });
+    console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, version, COLORS.DEFAULT);
   }
 
 
