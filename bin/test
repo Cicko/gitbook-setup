@@ -1,0 +1,5 @@
+{
+	'name':'myBook',
+  	'type':'book',
+	'deploys':'heroku'
+}
