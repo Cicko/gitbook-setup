@@ -73,9 +73,7 @@
       GulpfileCreator.createGulpfile(bookConfig)
       PackageJsonManager.createPackageJson(function () {
         fs.unlink('../dependencies.json');
-        BookCreator.writeToBookJson(function () {
-          console.log(Json.getFromFile("book.json"));
-        });
+        BookCreator.writeToBookJson(function () { });
       });
     });
   }
