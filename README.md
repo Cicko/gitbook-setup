@@ -14,6 +14,12 @@ how to execute the command you have just to run:
 > gitbook-setup [help]
 ```
 
+## Possible commands
+- Create
+- Install
+- Deploy
+
+
 ## Book creation
 
 You have now three options for creating a book:
