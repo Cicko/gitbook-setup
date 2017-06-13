@@ -23,10 +23,8 @@
   const DependenciesManager = require('../lib/DependenciesManager.js')
   const InstallManager = require('../lib/InstallManager.js')
 
-
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
-
 
   //var ghManager = new GithubManager();
   function loginOnGithub () {
@@ -110,7 +108,6 @@
 
 
   // Execution starts here
-
   if (argv._.includes("help") || noArgs)
     showHelp(argv._);
   else {
