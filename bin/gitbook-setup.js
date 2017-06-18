@@ -121,4 +121,14 @@
       showVersion();
     }
   }
+
+
+  module.exports.install = InstallManager.install;
+  module.exports.create = function (info) {
+    createBookByBookConfig(info);
+  }
+
+
+
+
 })();
