@@ -22,13 +22,14 @@
   const Json = require('../lib/helpers/Json.js');
   const DependenciesManager = require('../lib/DependenciesManager.js')
   const InstallManager = require('../lib/InstallManager.js')
+  const GithubManager = require('../lib/GithubManager.js')
 
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
 
-  //var ghManager = new GithubManager();
+  var ghManager = new GithubManager();
   function loginOnGithub () {
-    if (bookCreator) {
+    if (fs.existsSync('.config.book.json')) {
       ghManager.authenticate(function (token) {
         ghManager.createTokenFile(token);
       });
@@ -113,10 +114,15 @@
   else {
     if (argv._.includes("create"))
       createBook(argv);
-    else if (argv._.includes("deploy"));
     else if (argv._.includes("install")) {
       InstallManager.install();
     }
+    else if (argv._.includes("deploy"));
+    else if (argv._.includes('github'))
+      loginOnGithub();
+    else if (argv._.includes('create_repo'))
+      if (ghManager)
+        ghManager.createRepo("pruebita");
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
