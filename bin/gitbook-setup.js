@@ -14,7 +14,6 @@
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
   const BookCreator = require('../lib/BookCreator.js')
   const BookConfig = require('../lib/BookConfig.js')
-//  const GithubManager = require('../lib/GithubManager.js')
   const GulpfileCreator = require('../lib/GulpfileCreator.js')
   const TheHelper = require('../lib/TheHelper.js')
   const DeployManager = require('../lib/DeployManager.js')
@@ -138,7 +137,7 @@
     else if (argv._.includes('github'))
       loginOnGithub();
     else if (argv._.includes('create_repo')) {
-      ghManager.createRepo();
+      ghManager.setRemoteRepo();
     }
 
     else if (argv._.includes("version") || argv.version || argv.v) {
