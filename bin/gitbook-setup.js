@@ -56,6 +56,7 @@
         "description": args.i || "No Description about " + (args.n || "NoNameBook"),
         "authors": args.a? args.a.split(", ") : new Array(process.env.USER)
       }
+
       createBookByBookConfig(bookConfig);
     }
     else if (args._.includes("file")) {
@@ -63,6 +64,7 @@
     }
     else if (args._.includes("interactive")) {
       GitbookInquirer.ask(function (bookConfig) {
+
         createBookByBookConfig(bookConfig);
       });
     }
@@ -74,6 +76,7 @@
   }
 
   function createBookByBookConfig (bookConfig) {
+
     BookConfig.createFile(bookConfig);
     createDependenciesFile(bookConfig, function() {
       GulpfileCreator.createGulpfile(bookConfig)
@@ -115,8 +118,7 @@
   }
 
 
-  // Execution starts here
-
+  // EXECUTION STARTS HERE
   if(!fs.existsSync(path.join(process.env.HOME, '.gitbook-setup'))) {
     mkdirp(path.join(process.env.HOME, '.gitbook-setup'), function (err) {
       if (err) console.error(err)
@@ -135,19 +137,16 @@
     else if (argv._.includes("deploy"));
     else if (argv._.includes('github'))
       loginOnGithub();
-    else if (argv._.includes('create_repo'))
-      if (ghManager.haveToken())
-        ghManager.createRepo("pruebita");
-      else {
-        loginOnGithub(function () {
-          ghManager.createRepo('pruebito')
-        });
-      }
+    else if (argv._.includes('create_repo')) {
+      ghManager.createRepo();
+    }
 
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
   }
+
+
 
 
   module.exports.install = InstallManager.install;
