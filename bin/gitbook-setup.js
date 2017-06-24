@@ -29,14 +29,20 @@
   var numArgs = process.argv.length - 2;
 
   var ghManager = new GithubManager();
-  function loginOnGithub () {
+  function loginOnGithub (callback) {
     if (fs.existsSync('.config.book.json')) {
-      ghManager.authenticate(function (token) {
-        ghManager.createTokenFile(token);
-      });
+      if (!ghManager.haveToken()) {
+        ghManager.authenticate(function () {
+          if (callback) callback();
+        });
+
+      }
+      else {
+        console.log("You already have the token access");
+      }
     }
     else {
-      console.log("you have to initialize book first");
+      console.log(COLORS.RED,"You have to initialize book first",COLORS.DEFAULT);
     }
   }
 
@@ -130,8 +136,14 @@
     else if (argv._.includes('github'))
       loginOnGithub();
     else if (argv._.includes('create_repo'))
-      if (ghManager)
+      if (ghManager.haveToken())
         ghManager.createRepo("pruebita");
+      else {
+        loginOnGithub(function () {
+          ghManager.createRepo('pruebito')
+        });
+      }
+
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
