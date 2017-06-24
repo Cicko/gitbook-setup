@@ -8,6 +8,7 @@
   var Promise = require('promise');
   var fs = require('fs-extra')
   var Async = require('async');
+  var mkdirp = require('mkdirp');
   var version = require('../package.json').version;
 
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
@@ -109,6 +110,14 @@
 
 
   // Execution starts here
+
+  if(!fs.existsSync(path.join(process.env.HOME, '.gitbook-setup'))) {
+    mkdirp(path.join(process.env.HOME, '.gitbook-setup'), function (err) {
+      if (err) console.error(err)
+      else console.log('.gitbook-setup folder created')
+    });
+  }
+
   if (argv._.includes("help") || noArgs)
     showHelp(argv._);
   else {
