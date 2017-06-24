@@ -34,7 +34,6 @@
         ghManager.authenticate(function () {
           if (callback) callback();
         });
-
       }
       else {
         console.log("You already have the token access");
