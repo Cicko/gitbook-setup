@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/node
 
 (function () {
   var argv = require('minimist')(process.argv.slice(2));
