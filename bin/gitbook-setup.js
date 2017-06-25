@@ -129,6 +129,11 @@
       createBook(argv);
     else if (argv._.includes("install"))
       InstallManager.install();
+    else if (argv._.includes('build'))
+      exec('gitbook build', function (err, out) {
+        if (err) console.log(err);
+        console.log('_book folder is created')
+      });
     else if (argv._.includes("deploy"));
     else if (argv._.includes('github'))
       loginOnGithub();
