@@ -133,6 +133,7 @@
     else if (argv._.includes('github'))
       loginOnGithub();
     else if (argv._.includes('set-remote-repo')) {
+      console.log("setting remote repo")
       if (logged) {
         ghManager.setRemoteRepo();
       }
