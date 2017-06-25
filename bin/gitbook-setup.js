@@ -27,20 +27,18 @@
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
 
+  var logged = false;
+
   var ghManager = new GithubManager();
   function loginOnGithub (callback) {
     if (fs.existsSync('.config.book.json')) {
-      if (!ghManager.haveToken()) {
         ghManager.authenticate(function () {
+          logged = true;
           if (callback) callback();
         });
-      }
-      else {
-        console.log("You already have the token access");
-      }
     }
     else {
-      console.log(COLORS.RED,"You have to initialize book first",COLORS.DEFAULT);
+      console.log(COLORS.RED, "You have to initialize book first", COLORS.DEFAULT);
     }
   }
 
@@ -129,16 +127,23 @@
   else {
     if (argv._.includes("create"))
       createBook(argv);
-    else if (argv._.includes("install")) {
+    else if (argv._.includes("install"))
       InstallManager.install();
-    }
     else if (argv._.includes("deploy"));
     else if (argv._.includes('github'))
       loginOnGithub();
-    else if (argv._.includes('create_repo')) {
-      ghManager.setRemoteRepo();
+    else if (argv._.includes('set-remote-repo')) {
+      if (logged) {
+        ghManager.setRemoteRepo();
+      }
+      else {
+        loginOnGithub(function () {
+          ghManager.setRemoteRepo();
+        });
+      }
     }
-
+    else if (argv._.includes('delete_token'))
+      ghManager.deleteTokenAccess();
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
