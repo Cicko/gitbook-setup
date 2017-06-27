@@ -14,6 +14,14 @@ how to execute the command you have just to run:
 > gitbook-setup [help]
 ```
 
+
+
+## Dependencies
+| Name         | Version                          |
+|--------------|----------------------------------|
+| Nodejs           | >= 6.x.x                        |
+| NPM           | >= 3.x.x                        |
+
 ## Possible commands
 - Create
 - Install
