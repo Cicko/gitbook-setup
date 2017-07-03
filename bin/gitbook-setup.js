@@ -16,7 +16,6 @@
   const BookConfig = require('../lib/BookConfig.js')
   const GulpfileCreator = require('../lib/GulpfileCreator.js')
   const TheHelper = require('../lib/TheHelper.js')
-  const DeployManager = require('../lib/DeployManager.js')
   const PackageJsonManager = require('../lib/PackageJsonManager.js')
   const COLORS = require('../lib/helpers/ShellColors.js')
   const Json = require('../lib/helpers/Json.js');
@@ -118,7 +117,7 @@
   if(!fs.existsSync(path.join(process.env.HOME, '.gitbook-setup'))) {
     mkdirp(path.join(process.env.HOME, '.gitbook-setup'), function (err) {
       if (err) console.error(err)
-      else console.log('.gitbook-setup folder created')
+      else console.log(path.join(process.env.HOME, '.gitbook-setup folder created'))
     });
   }
 
@@ -138,7 +137,6 @@
     else if (argv._.includes('github'))
       loginOnGithub();
     else if (argv._.includes('set-remote-repo')) {
-      console.log("setting remote repo")
       if (logged) {
         ghManager.setRemoteRepo();
       }
