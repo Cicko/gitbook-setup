@@ -49,8 +49,12 @@
         "templateName": (args.t && args.t.includes("own"))? args.t.substr(4) : "",
         "deploys": args.d? args.d.split(",") : new Array(),
         "description": args.i || "No Description about " + (args.n || "NoNameBook"),
-        "authors": args.a? args.a.split(", ") : new Array(process.env.USER)
+        "authors": args.a? args.a.split(", ") : new Array(process.env.USER),
+        "private": args.o? "yes" : "no",
       }
+
+      if (bookConfig["private"] == "yes")
+        bookConfig["organization"] = args.o;
 
       createBookByBookConfig(bookConfig);
     }
