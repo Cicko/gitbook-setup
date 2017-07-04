@@ -22,6 +22,7 @@
   const DependenciesManager = require('../lib/DependenciesManager.js')
   const InstallManager = require('../lib/InstallManager.js')
   const GithubManager = require('../lib/GithubManager.js')
+  const AuthorizationManager = require('../lib/AuthorizationManager.js')
 
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
@@ -152,6 +153,8 @@
     }
     else if (argv._.includes('delete_token'))
       ghManager.deleteTokenAccess();
+    else if (argv._.includes('authorization'))
+      AuthorizationManager.loginWithGithub();
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
