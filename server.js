@@ -3,7 +3,7 @@ var path = require('path')
 var app = express();
 var port = (process.env.PORT || 3000);
 
-
+console.log(port + " is the port number");
 
 app.use('/', express.static(__dirname + '/public'));
 app.set('views', path.join(__dirname, 'views'));
