@@ -193,19 +193,41 @@
 
 
 
-  module.exports.create = function (info, callback) {
+  module.exports.create = (info, callback) => {
     createBookByBookConfig(info, function(err) {
       if (err) callback(err);
-      else callback(false);
+      else {
+        callback(null);
+        exec('ls -l', (err, out) => {
+          console.log(out);
+        });
+      }
     });
   }
-  module.exports.install = function (callback) {
-    InstallManager.install(function () {
-      callback();
+  module.exports.install = (callback) => {
+    InstallManager.install((err) => {
+      if (err) {
+        console.log("ERROR: " + err);
+        callback(err);
+        process.exit(-2);
+      }
+      else {
+        callback(null);
+      }
     });
   };
-  module.exports.authenticate = function (callback) {
-
+  module.exports.build = (callback) => {
+    exec('gitbook build', (err, out) => {
+      if (err) console.log(err);
+      console.log('_book folder is created')
+      callback(null);
+    });
+  }
+  module.exports.authenticate = (callback) => {
+    ghManager.authenticate((err) => {
+      if (!err) callback(null);
+      else callback(err);
+    });
   }
 
 })();
