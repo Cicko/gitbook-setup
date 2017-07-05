@@ -19,7 +19,7 @@ how to execute the command you have just to run:
 ## Dependencies
 | Name         | Version                          |
 |--------------|----------------------------------|
-| Nodejs           | >= 6.x.x                        |
+| Nodejs           | >= 8.x.x                        |
 | NPM           | >= 3.x.x                        |
 
 ## Possible commands
