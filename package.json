@@ -55,6 +55,7 @@
     "path": "^0.12.7",
     "promise": "^7.1.1",
     "prompt": "^1.0.0",
+    "scrape": "^0.2.3",
     "shell-task": "^1.0.0",
     "shelljs": "^0.7.7",
     "tacks": "^1.2.2"

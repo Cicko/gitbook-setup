@@ -1,16 +1,6 @@
 #! /usr/bin/node
 
 (function () {
-  var argv = require('minimist')(process.argv.slice(2));
-  var npm = require('npm');
-  var path = require('path');
-  const exec = require('child_process').exec;
-  var Promise = require('promise');
-  var fs = require('fs-extra')
-  var Async = require('async');
-  var mkdirp = require('mkdirp');
-  var version = require('../package.json').version;
-
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
   const BookCreator = require('../lib/BookCreator.js')
   const BookConfig = require('../lib/BookConfig.js')
@@ -23,15 +13,23 @@
   const InstallManager = require('../lib/InstallManager.js')
   const GithubManager = require('../lib/GithubManager.js')
   const AuthorizationManager = require('../lib/AuthorizationManager.js')
-  var authorizationManager = new AuthorizationManager();
+  const ModulesManager = require('../lib/helpers/ModulesManager.js')
 
-  var noArgs = process.argv.length == 2;
-  var numArgs = process.argv.length - 2;
+  const authorizationManager = new AuthorizationManager();
+  const ghManager = new GithubManager();
 
+  const Promise = require('promise');
+  const exec = require('child_process').exec;
+  const argv = require('minimist')(process.argv.slice(2));
+  const npm = require('npm');
+  const path = require('path');
+  const fs = require('fs-extra')
+  const Async = require('async');
+  const mkdirp = require('mkdirp');
+  var scrape = require('scrape');
+  const version = require('../package.json').version;
   var logged = false;
 
-
-  var ghManager = new GithubManager();
   function loginOnGithub (callback) {
     if (fs.existsSync('.config.book.json')) {
         ghManager.authenticate(function () {
@@ -59,14 +57,16 @@
       if (bookConfig["private"] == "yes")
         bookConfig["organization"] = args.o;
 
-      createBookByBookConfig(bookConfig);
+
+
+     createBookByBookConfig(bookConfig);
+
     }
     else if (args._.includes("file")) {
       console.log("This option is under construction.");
     }
     else if (args._.includes("interactive")) {
       GitbookInquirer.ask(function (bookConfig) {
-
         createBookByBookConfig(bookConfig);
       });
     }
@@ -77,14 +77,33 @@
     }
   }
 
-  function createBookByBookConfig (bookConfig) {
+  function createBookByBookConfig (bookConfig, callback) {
+    var error = false;
 
-    BookConfig.createFile(bookConfig);
-    createDependenciesFile(bookConfig, function() {
-      GulpfileCreator.createGulpfile(bookConfig)
-      PackageJsonManager.createPackageJson(function () {
-        fs.unlink('../dependencies.json');
-        BookCreator.writeToBookJson(function () { });
+    bookConfig.deploys.reduce((acc, plugin) => {
+      return acc.then((_ready) => {
+        return new Promise((resolve, _reject) => {
+          ModulesManager.checkIfNPMModuleExists('gitbook-setup-deploy-' + plugin, function (exists) {
+            if (!exists) {
+              console.log(COLORS.RED,"Module gitbook-setup-deploy-" + plugin + " does not exist",COLORS.DEFAULT);
+              process.exit(0);
+            }
+            else {
+              resolve("ok")
+            }
+          });
+        });
+      })
+    }, Promise.resolve(null)).then (function () {
+      BookConfig.createFile(bookConfig);
+      createDependenciesFile(bookConfig, function(err) {
+        GulpfileCreator.createGulpfile(bookConfig);
+        PackageJsonManager.createPackageJson(function () {
+          fs.unlink('../dependencies.json');
+          BookCreator.writeToBookJson(function () {
+            if (callback) callback(error);
+          });
+        });
       });
     });
   }
@@ -99,6 +118,11 @@
             DependenciesManager.createDependenciesFile(function() {
               callback();
             });
+      });
+    }
+    else {
+      DependenciesManager.createDependenciesFile(function() {
+        callback();
       });
     }
   }
@@ -128,7 +152,7 @@
     });
   }
 
-  if (argv._.includes("help") || noArgs)
+  if (argv._.includes("help") || process.argv.length == 2)
     showHelp(argv._);
   else {
     if (argv._.includes("create"))
@@ -141,7 +165,7 @@
         console.log('_book folder is created')
       });
     else if (argv._.includes("deploy"));
-    else if (argv._.includes('github'))
+    else if (argv._.includes('authenticate'))
       loginOnGithub();
     else if (argv._.includes('set-remote-repo')) {
       if (logged) {
@@ -155,6 +179,8 @@
     }
     else if (argv._.includes('delete_token'))
       ghManager.deleteTokenAccess();
+    else if (argv._.includes('test'))
+      ModulesManager.checkModuleGloballyInstalled('ghshell');
     else if (argv._.includes('authorization')) {
       authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
         console.log("Is authorizated?: " + isAuthorizated);
@@ -167,13 +193,19 @@
 
 
 
-
-  module.exports.install = InstallManager.install;
-  module.exports.create = function (info) {
-    createBookByBookConfig(info);
+  module.exports.create = function (info, callback) {
+    createBookByBookConfig(info, function(err) {
+      if (err) callback(err);
+      else callback(false);
+    });
   }
+  module.exports.install = function (callback) {
+    InstallManager.install(function () {
+      callback();
+    });
+  };
+  module.exports.authenticate = function (callback) {
 
-
-
+  }
 
 })();
