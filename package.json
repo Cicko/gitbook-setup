@@ -1,6 +1,6 @@
 {
   "name": "gitbook-setup",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "This is my first node package that will be for setup gitbook.",
   "main": "./bin/gitbook-setup.js",
   "bin": {
@@ -64,5 +64,7 @@
     "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
   },
   "homepage": "https://www.npmjs.com/package/gitbook-setup",
-  "engines" : { "node" : ">=8.0.0" }
+  "engines": {
+    "node": ">=8.0.0"
+  }
 }
