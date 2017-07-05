@@ -152,7 +152,7 @@
     });
   }
 
-  if (argv._.includes("help") || process.argv.length == 2)
+  if (argv._.includes("help"))
     showHelp(argv._);
   else {
     if (argv._.includes("create"))

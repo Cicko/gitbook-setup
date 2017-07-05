@@ -64,8 +64,5 @@
   "bugs": {
     "url": "https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17/issues"
   },
-  "homepage": "https://www.npmjs.com/package/gitbook-setup",
-  "engines": {
-    "node": ">=8.0.0"
-  }
+  "homepage": "https://www.npmjs.com/package/gitbook-setup"
 }
