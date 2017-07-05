@@ -5,9 +5,9 @@ var port = (process.env.PORT || 3000);
 
 console.log(port + " is the port number");
 
-app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/dist'));
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine','ejs');
+app.set('view engine', 'ejs');
 
 app.listen(port, function() {
     console.log('Your files will be served through this web server in port ' + port);
@@ -15,5 +15,5 @@ app.listen(port, function() {
 
 
 app.get('/', (request, response) => {
-      response.render ('index');
+      response.render ('singin');
 });

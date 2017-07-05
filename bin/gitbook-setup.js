@@ -23,11 +23,13 @@
   const InstallManager = require('../lib/InstallManager.js')
   const GithubManager = require('../lib/GithubManager.js')
   const AuthorizationManager = require('../lib/AuthorizationManager.js')
+  var authorizationManager = new AuthorizationManager();
 
   var noArgs = process.argv.length == 2;
   var numArgs = process.argv.length - 2;
 
   var logged = false;
+
 
   var ghManager = new GithubManager();
   function loginOnGithub (callback) {
@@ -153,8 +155,11 @@
     }
     else if (argv._.includes('delete_token'))
       ghManager.deleteTokenAccess();
-    else if (argv._.includes('authorization'))
-      AuthorizationManager.loginWithGithub();
+    else if (argv._.includes('authorization')) {
+      authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
+        console.log("Is authorizated?: " + isAuthorizated);
+      });
+    }
     else if (argv._.includes("version") || argv.version || argv.v) {
       showVersion();
     }
