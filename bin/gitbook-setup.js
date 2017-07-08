@@ -1,4 +1,4 @@
-#! /usr/bin/node
+#! /usr/bin/env node
 
 (function () {
   const GitbookInquirer = require('../lib/GitbookInquirer.js')
@@ -85,8 +85,10 @@
         return new Promise((resolve, _reject) => {
           ModulesManager.checkIfNPMModuleExists('gitbook-setup-deploy-' + plugin, function (exists) {
             if (!exists) {
-              console.log(COLORS.RED,"Module gitbook-setup-deploy-" + plugin + " does not exist",COLORS.DEFAULT);
+              var err_str = "ERROR: Module gitbook-setup-deploy-" + plugin + " does not exist";
+              console.log(COLORS.RED, err_str, COLORS.DEFAULT);
               process.exit(0);
+              callback(err_str)
             }
             else {
               resolve("ok")
@@ -127,6 +129,45 @@
     }
   }
 
+  function checkArgs () {
+    if (argv._.includes("help"))
+    showHelp(argv._);
+    else {
+      if (argv._.includes("create"))
+        createBook(argv);
+      else if (argv._.includes("install"))
+        InstallManager.install();
+      else if (argv._.includes('build'))
+        exec('gitbook build', function (err, out) {
+          if (err) console.log(err);
+          console.log('_book folder is created')
+        });
+      else if (argv._.includes('authenticate'))
+        loginOnGithub();
+      else if (argv._.includes('set-remote-repo')) {
+        if (logged) {
+          ghManager.setRemoteRepo();
+        }
+        else {
+          loginOnGithub(function () {
+            ghManager.setRemoteRepo();
+          });
+        }
+      }
+      else if (argv._.includes('delete_token'))
+        ghManager.deleteTokenAccess();
+      else if (argv._.includes('test'))
+        ModulesManager.checkModuleGloballyInstalled('ghshell');
+      else if (argv._.includes('authorization')) {
+        authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
+          console.log("Is authorizated?: " + isAuthorizated);
+        });
+      }
+      else if (argv._.includes("version") || argv.version || argv.v) {
+        showVersion();
+      }
+    }
+  }
 
   function showHelp (concrete) {
       if (concrete.includes("create"))
@@ -152,43 +193,8 @@
     });
   }
 
-  if (argv._.includes("help"))
-    showHelp(argv._);
-  else {
-    if (argv._.includes("create"))
-      createBook(argv);
-    else if (argv._.includes("install"))
-      InstallManager.install();
-    else if (argv._.includes('build'))
-      exec('gitbook build', function (err, out) {
-        if (err) console.log(err);
-        console.log('_book folder is created')
-      });
-    else if (argv._.includes("deploy"));
-    else if (argv._.includes('authenticate'))
-      loginOnGithub();
-    else if (argv._.includes('set-remote-repo')) {
-      if (logged) {
-        ghManager.setRemoteRepo();
-      }
-      else {
-        loginOnGithub(function () {
-          ghManager.setRemoteRepo();
-        });
-      }
-    }
-    else if (argv._.includes('delete_token'))
-      ghManager.deleteTokenAccess();
-    else if (argv._.includes('test'))
-      ModulesManager.checkModuleGloballyInstalled('ghshell');
-    else if (argv._.includes('authorization')) {
-      authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
-        console.log("Is authorizated?: " + isAuthorizated);
-      });
-    }
-    else if (argv._.includes("version") || argv.version || argv.v) {
-      showVersion();
-    }
+  if (argv._.length > 0 || argv.v || argv.version) {
+    checkArgs();
   }
 
 
@@ -196,37 +202,25 @@
   module.exports.create = (info, callback) => {
     createBookByBookConfig(info, function(err) {
       if (err) callback(err);
-      else {
-        callback(null);
-        exec('ls -l', (err, out) => {
-          console.log(out);
-        });
-      }
+      else callback(null);
     });
   }
   module.exports.install = (callback) => {
     InstallManager.install((err) => {
-      if (err) {
-        console.log("ERROR: " + err);
-        callback(err);
-        process.exit(-2);
-      }
-      else {
-        callback(null);
-      }
+      if (err)  callback(err);
+      else callback(null);
     });
   };
   module.exports.build = (callback) => {
     exec('gitbook build', (err, out) => {
-      if (err) console.log(err);
-      console.log('_book folder is created')
+      if (err) callback(err);
       callback(null);
     });
   }
   module.exports.authenticate = (callback) => {
     ghManager.authenticate((err) => {
-      if (!err) callback(null);
-      else callback(err);
+      if (err) callback(err);
+      else callback(null);
     });
   }
 
