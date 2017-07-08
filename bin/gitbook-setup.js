@@ -14,6 +14,7 @@
   const GithubManager = require('../lib/GithubManager.js')
   const AuthorizationManager = require('../lib/AuthorizationManager.js')
   const ModulesManager = require('../lib/helpers/ModulesManager.js')
+  const StringChecker = require('../lib/helpers/StringChecker.js')
 
   const authorizationManager = new AuthorizationManager();
   const ghManager = new GithubManager();
@@ -30,6 +31,8 @@
   const version = require('../package.json').version;
   var logged = false;
 
+
+  // START FUNCTIONS
   function loginOnGithub (callback) {
     if (fs.existsSync('.config.book.json')) {
         ghManager.authenticate(function () {
@@ -43,57 +46,86 @@
   }
 
   function createBook (args) {
-    if (args._.includes("args")) {
+    if (args.n) {
       var bookConfig = {
         "name": args.n || "NoNameBook",
-        "type": args.t? (args.t.includes("own")? args.t.substr(0,3) : args.t) : "book",
-        "templateName": (args.t && args.t.includes("own"))? args.t.substr(4) : "",
+        "template": (args.t)? args.t : "book",
         "deploys": args.d? args.d.split(",") : new Array(),
         "description": args.i || "No Description about " + (args.n || "NoNameBook"),
         "authors": args.a? args.a.split(", ") : new Array(process.env.USER),
         "private": args.o? "yes" : "no",
       }
-
       if (bookConfig["private"] == "yes")
         bookConfig["organization"] = args.o;
 
-
-
-     createBookByBookConfig(bookConfig);
-
+     createBookByConfig(bookConfig);
     }
-    else if (args._.includes("file")) {
-      console.log("This option is under construction.");
+    else if (args.f || args.file || args._.includes("file")) {
+      var file;
+      if (typeof args.file === 'string') file = args.file;
+      else if (typeof args.f === 'string') file = args.f
+      else if (args._[1] == "file" && args._[2])  file = args._[2]
+      var fileContent = fs.existsSync(file)? fs.readFileSync(file,"utf-8") : null;
+      if (fileContent) {
+        BookConfig.check(fileContent);
+        createBookByConfig(fileContent);
+      }
+      else {
+        console.log("ERROR: Cannot get the file " + file);
+      }
     }
     else if (args._.includes("interactive")) {
       GitbookInquirer.ask(function (bookConfig) {
-        createBookByBookConfig(bookConfig);
+        createBookByConfig(bookConfig);
       });
     }
     else {
       GitbookInquirer.ask(function (bookConfig) {
-        createBookByBookConfig(bookConfig);
+        createBookByConfig(bookConfig);
       });
     }
   }
 
-  function createBookByBookConfig (bookConfig, callback) {
+  function createBookByConfig (bookConfig, callback) {
     var error = false;
-
+    ModulesManager.checkIfNPMModuleExists('gitbook-setup-template-' + bookConfig.template, function (exists) {
+      if (!exists) {
+        var err_str = "ERROR: Template " + bookConfig.template + " does not exist";
+        console.log(COLORS.RED, err_str, COLORS.DEFAULT);
+        if (callback) callback(err_str);
+        process.exit(-1);
+      }
+    })
     bookConfig.deploys.reduce((acc, plugin) => {
       return acc.then((_ready) => {
         return new Promise((resolve, _reject) => {
-          ModulesManager.checkIfNPMModuleExists('gitbook-setup-deploy-' + plugin, function (exists) {
-            if (!exists) {
-              var err_str = "ERROR: Module gitbook-setup-deploy-" + plugin + " does not exist";
-              console.log(COLORS.RED, err_str, COLORS.DEFAULT);
-              process.exit(0);
-              callback(err_str)
-            }
-            else {
-              resolve("ok")
-            }
-          });
+          if (!plugin.includes("s:")) { // If its server don't check module
+            ModulesManager.checkIfNPMModuleExists('gitbook-setup-deploy-' + plugin, function (exists) {
+              if (!exists) {
+                var err_str = "ERROR: Module gitbook-setup-deploy-" + plugin + " does not exist";
+                console.log(COLORS.RED, err_str, COLORS.DEFAULT);
+                process.exit(-2);
+                reject("fail");
+                if (callback) callback(err_str)
+              }
+              else {
+                resolve("ok")
+              }
+            });
+          }
+          else if (StringChecker.isIPaddress(plugin)) {
+            resolve("ok")
+          }
+          else if (StringChecker.isURL(plugin)){
+            resolve("ok");
+          }
+          else {
+            var err_str = plugin + " is not valid deployment";
+            if (callback) callback(err_str);
+            console.log(COLORS.RED, err_str, COLORS.DEFAULT);
+            process.exist(-3);
+            reject("fail");
+          }
         });
       })
     }, Promise.resolve(null)).then (function () {
@@ -184,23 +216,33 @@
     console.log(COLORS.GREEN,"Version of gitbook-setup: ",COLORS.RED, version, COLORS.DEFAULT);
   }
 
+  function existsGitbookSetupFolder () {
+    return fs.existsSync(path.join(process.env.HOME, '.gitbook-setup'));
+  }
 
-  // EXECUTION STARTS HERE
-  if(!fs.existsSync(path.join(process.env.HOME, '.gitbook-setup'))) {
+  function createGitbookSetupFolder () {
     mkdirp(path.join(process.env.HOME, '.gitbook-setup'), function (err) {
       if (err) console.error(err)
       else console.log(path.join(process.env.HOME, '.gitbook-setup folder created'))
     });
   }
+  // END FUNCTIONS
+
+
+  // EXECUTION STARTS HERE
+  if(!existsGitbookSetupFolder())
+    createGitbookSetupFolder();
 
   if (argv._.length > 0 || argv.v || argv.version) {
     checkArgs();
   }
+  else {
+    console.log(process.argv);
+  }
 
-
-
+  // EXPORTS
   module.exports.create = (info, callback) => {
-    createBookByBookConfig(info, function(err) {
+    createBookByConfig(info, function(err) {
       if (err) callback(err);
       else callback(null);
     });
