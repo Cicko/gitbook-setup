@@ -135,7 +135,11 @@
         PackageJsonManager.createPackageJson(function () {
           fs.unlink('../dependencies.json');
           BookCreator.writeToBookJson(function () {
-            if (callback) callback(error);
+            if (callback && error) callback(error);
+            else {
+              if (callback) callback(null);
+              console.log(COLORS.YELLOW,"Now execute ",COLORS.GREEN,"$gitbook-setup install " + COLORS.YELLOW + "inside the " + bookConfig.name + " folder.",COLORS.DEFAULT);
+            }
           });
         });
       });
