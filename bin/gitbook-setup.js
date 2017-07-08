@@ -27,8 +27,8 @@
   const fs = require('fs-extra')
   const Async = require('async');
   const mkdirp = require('mkdirp');
-  var scrape = require('scrape');
   const version = require('../package.json').version;
+  var scrape = require('scrape');
   var logged = false;
 
 
@@ -186,10 +186,6 @@
           });
         }
       }
-      else if (argv._.includes('delete_token'))
-        ghManager.deleteTokenAccess();
-      else if (argv._.includes('test'))
-        ModulesManager.checkModuleGloballyInstalled('ghshell');
       else if (argv._.includes('authorization')) {
         authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
           console.log("Is authorizated?: " + isAuthorizated);
@@ -264,6 +260,14 @@
       if (err) callback(err);
       else callback(null);
     });
+  }
+  module.exports.haveAuthorization = (callback) => {
+    authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
+      callback(isAuthorizated);
+    });
+  }
+  module.exports.version = (callback) => {
+    callback(version);
   }
 
 })();
