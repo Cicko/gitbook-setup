@@ -101,30 +101,26 @@
         return new Promise((resolve, _reject) => {
           if (!plugin.includes("s:")) { // If its server don't check module
             ModulesManager.checkIfNPMModuleExists('gitbook-setup-deploy-' + plugin, function (exists) {
-              if (!exists) {
-                var err_str = "ERROR: Module gitbook-setup-deploy-" + plugin + " does not exist";
+              if (StringChecker.isIPaddress(plugin)) {
+                console.log(COLORS.GREEN, plugin + " is correct ip address");
+                resolve("ok")
+              }
+              else if (StringChecker.isURL(plugin)){
+                console.log(COLORS.GREEN, plugin + " is correct url address")
+                resolve("ok");
+              }
+              else if (!exists) {
+                var err_str = "ERROR: " + plugin + " does not exist or is not valid IP or domain";
                 console.log(COLORS.RED, err_str, COLORS.DEFAULT);
-                process.exit(-2);
                 reject("fail");
                 if (callback) callback(err_str)
+                process.exit(-2);
               }
               else {
+                console.log(COLORS.GREEN, plugin + " is correct module name")
                 resolve("ok")
               }
             });
-          }
-          else if (StringChecker.isIPaddress(plugin)) {
-            resolve("ok")
-          }
-          else if (StringChecker.isURL(plugin)){
-            resolve("ok");
-          }
-          else {
-            var err_str = plugin + " is not valid deployment";
-            if (callback) callback(err_str);
-            console.log(COLORS.RED, err_str, COLORS.DEFAULT);
-            process.exist(-3);
-            reject("fail");
           }
         });
       })
