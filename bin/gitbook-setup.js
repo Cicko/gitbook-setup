@@ -190,6 +190,14 @@
           });
         }
       }
+      else if (argv._.includes('membership')) {
+        var config_file = require(path.join(process.cwd(),'.config.book.json'));
+        var org = config_file.organization;
+        ghManager.checkAdminOrg(org, (isAdmin) => {
+            if (isAdmin) console.log("IS ADMIN OF " + org)
+            else console.log("NOT ADMIN OF " + org)
+        });
+      }
       else if (argv._.includes('authorization')) {
         authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
           console.log("Is authorizated?: " + isAuthorizated);
@@ -268,6 +276,11 @@
   module.exports.haveAuthorization = (callback) => {
     authorizationManager.checkOrg(require(path.join(process.cwd(),'.config.book.json')).organization, function(isAuthorizated) {
       callback(isAuthorizated);
+    });
+  }
+  module.exports.isAdminofOrg = (org, callback) => {
+    ghManager.checkAdminOrg(org, (isAdmin) => {
+        callback(isAdmin);
     });
   }
   module.exports.version = (callback) => {
