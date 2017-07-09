@@ -148,7 +148,7 @@
 
   // This function fill the dependencies.json file to contain all dependencies for template and deployments that will be pushed to package.json
   function createDependenciesFile (answers, callback) {
-    DependenciesManager.addDependency('gitbook-setup-template-' + (answers.templateName || answers.type));
+    DependenciesManager.addDependency('gitbook-setup-template-' + (answers.template || answers.type));
     if (answers.deploys.length > 0) {
       answers.deploys.forEach(function (element, i, array) {
           DependenciesManager.addDependency('gitbook-setup-deploy-' + element);
