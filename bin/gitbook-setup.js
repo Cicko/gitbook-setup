@@ -248,7 +248,7 @@
 
   // EXPORTS
   module.exports.create = (info, callback) => {
-    BookConfig.check(fileContent, (err, fixedContent) => {
+    BookConfig.check(info, (err, fixedContent) => {
       if (err) console.log(err);
       else {
         createBookByConfig(fixedContent, function(err) {
