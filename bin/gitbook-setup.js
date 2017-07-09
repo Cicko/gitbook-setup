@@ -279,8 +279,8 @@
         callback(isAdmin);
     });
   }
-  module.exports.version = (callback) => {
-    callback(version);
+  module.exports.version = () => {
+    return version;
   }
 
 })();
