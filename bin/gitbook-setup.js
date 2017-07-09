@@ -112,7 +112,7 @@
               else if (!exists) {
                 var err_str = "ERROR: " + plugin + " does not exist or is not valid IP or domain";
                 console.log(COLORS.RED, err_str, COLORS.DEFAULT);
-                reject("fail");
+                _reject("fail");
                 if (callback) callback(err_str)
                 process.exit(-2);
               }
