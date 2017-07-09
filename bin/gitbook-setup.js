@@ -67,9 +67,9 @@
       else if (args._[1] == "file" && args._[2])  file = args._[2]
       var fileContent = fs.existsSync(file)? Json.getFromFile(file) : null;
       if (fileContent) {
-        BookConfig.check(fileContent, (err) => {
+        BookConfig.check(fileContent, (err, fixedContent) => {
           if (err) console.log(err);
-          else createBookByConfig(fileContent);
+          else createBookByConfig(fixedContent);
         });
       }
       else {
