@@ -65,10 +65,12 @@
       if (typeof args.file === 'string') file = args.file;
       else if (typeof args.f === 'string') file = args.f
       else if (args._[1] == "file" && args._[2])  file = args._[2]
-      var fileContent = fs.existsSync(file)? fs.readFileSync(file,"utf-8") : null;
+      var fileContent = fs.existsSync(file)? Json.getFromFile(file) : null;
       if (fileContent) {
-        BookConfig.check(fileContent);
-        createBookByConfig(fileContent);
+        BookConfig.check(fileContent, (err) => {
+          if (err) console.log(err);
+          else createBookByConfig(fileContent);
+        });
       }
       else {
         console.log("ERROR: Cannot get the file " + file);
