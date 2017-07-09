@@ -248,10 +248,16 @@
 
   // EXPORTS
   module.exports.create = (info, callback) => {
-    createBookByConfig(info, function(err) {
-      if (err) callback(err);
-      else callback(null);
+    BookConfig.check(fileContent, (err, fixedContent) => {
+      if (err) console.log(err);
+      else {
+        createBookByConfig(fixedContent, function(err) {
+          if (err) callback(err);
+          else callback(null);
+        });
+      }
     });
+
   }
   module.exports.install = (callback) => {
     InstallManager.install((err) => {
