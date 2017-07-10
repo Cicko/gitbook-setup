@@ -275,6 +275,8 @@
 
   module.exports.install = (callback) => {
     InstallManager.install((err, message) => {
+      console.log("ERR IS " + err);
+      console.log("FROM API MESSAGE IS: " + message);
       if (message) callback(null, message);
       if (err)  callback(err, null);
     });
