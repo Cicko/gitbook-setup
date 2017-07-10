@@ -31,6 +31,8 @@
   var scrape = require('scrape');
   var logged = false;
 
+  var executedOnModernDoc = process.argv.length == 16;
+
 
   // START FUNCTIONS
   function loginOnGithub (callback) {
@@ -275,10 +277,9 @@
 
   module.exports.install = (callback) => {
     InstallManager.install((err, message) => {
-      console.log("ERR IS " + err);
       console.log("FROM API MESSAGE IS: " + message);
       if (message) callback(null, message);
-      if (err)  callback(err, null);
+      if (err) callback(err, null);
     });
   };
   module.exports.build = (callback) => {
