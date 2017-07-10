@@ -257,8 +257,22 @@
         });
       }
     });
-
   }
+
+
+  module.exports.checkDeploy = (name, callback) => {
+    ModulesManager.checkIfNPMModuleExists(name, function (exists) {
+      if (StringChecker.isIPaddress(plugin))
+        callback(null)
+      else if (StringChecker.isURL(plugin))
+        callback(null)
+      else if (exists)
+        callback(null)
+      else
+        callback("ERROR: " + plugin + " does not exist or is not valid IP or domain")
+    });
+  }
+
   module.exports.install = (callback) => {
     InstallManager.install((err) => {
       if (err)  callback(err);
