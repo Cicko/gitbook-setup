@@ -275,8 +275,8 @@
 
   module.exports.install = (callback) => {
     InstallManager.install((err, message) => {
-      if (err)  callback(err);
-      else callback(null, message);
+      if (message) callback(null, message);
+      if (err)  callback(err, null);
     });
   };
   module.exports.build = (callback) => {
