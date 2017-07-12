@@ -255,7 +255,7 @@
       else {
         createBookByConfig(fixedContent, function(err) {
           if (err) callback(err);
-          else callback(null);
+          else callback(null, fixedContent);
         });
       }
     });
