@@ -24,6 +24,7 @@
   const argv = require('minimist')(process.argv.slice(2));
   const npm = require('npm');
   const path = require('path');
+  var shell = require('shelljs')
   const fs = require('fs-extra')
   const Async = require('async');
   const mkdirp = require('mkdirp');
@@ -139,6 +140,8 @@
             else {
               if (callback) callback(null);
               console.log(COLORS.YELLOW,"Now execute ",COLORS.GREEN,"$gitbook-setup install " + COLORS.YELLOW + "inside the " + bookConfig.name + " folder.",COLORS.DEFAULT);
+              shell.cd('..');
+              console.log(process.cwd());
             }
           });
         });
