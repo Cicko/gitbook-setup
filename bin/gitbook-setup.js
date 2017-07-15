@@ -70,7 +70,7 @@
       else if (args._[1] == "file" && args._[2])  file = args._[2]
       var fileContent = fs.existsSync(file)? Json.getFromFile(file) : null;
       if (fileContent) {
-        BookConfig.check(fileContent, (err, fixedContent) => {
+        BookConfig.check(fileContent, function (err, fixedContent) {
           if (err) console.log(err);
           else createBookByConfig(fixedContent);
         });
@@ -101,9 +101,9 @@
         process.exit(-1);
       }
     })
-    bookConfig.deploys.reduce((acc, plugin) => {
-      return acc.then((_ready) => {
-        return new Promise((resolve, _reject) => {
+    bookConfig.deploys.reduce(function (acc, plugin) {
+      return acc.then( function(_ready) {
+        return new Promise(function (resolve, _reject) {
           if (!plugin.includes("s:")) { // If its server don't check module
             ModulesManager.checkIfNPMModuleExists('gitbook-setup-deploy-' + plugin, function (exists) {
               if (StringChecker.isIPaddress(plugin)) {
@@ -196,7 +196,7 @@
       else if (argv._.includes('membership')) {
         var config_file = require(path.join(process.cwd(),'.config.book.json'));
         var org = config_file.organization;
-        ghManager.checkAdminOrg(org, (isAdmin) => {
+        ghManager.checkAdminOrg(org, function (isAdmin) {
             if (isAdmin) console.log("IS ADMIN OF " + org)
             else console.log("NOT ADMIN OF " + org)
         });
