@@ -175,7 +175,10 @@
       if (argv._.includes("create"))
         createBook(argv);
       else if (argv._.includes("install"))
-        InstallManager.install();
+        InstallManager.install((err, msg) => {
+          if (err) console.log(err);
+          if (msg) console.log(msg);
+        });
       else if (argv._.includes('build'))
         exec('gitbook build', function (err, out) {
           if (err) console.log(err);
