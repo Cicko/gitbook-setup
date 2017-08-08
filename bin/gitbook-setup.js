@@ -15,6 +15,7 @@
   const AuthorizationManager = require('../lib/AuthorizationManager.js')
   const ModulesManager = require('../lib/helpers/ModulesManager.js')
   const StringChecker = require('../lib/helpers/StringChecker.js')
+  const FileCreator = require('../lib/helpers/FileCreator.js')
 
   const authorizationManager = new AuthorizationManager();
   const ghManager = new GithubManager();
@@ -92,6 +93,7 @@
   }
 
   function createBookByConfig (bookConfig, callback) {
+
     var error = false;
     ModulesManager.checkIfNPMModuleExists('gitbook-setup-template-' + bookConfig.template, function (exists) {
       if (!exists) {
@@ -139,9 +141,9 @@
             if (callback && error) callback(error);
             else {
               if (callback) callback(null);
+              FileCreator.create('README.md','',false, () => { console.log("SUSO")});
               console.log(COLORS.YELLOW,"Now execute ",COLORS.GREEN,"$gitbook-setup install " + COLORS.YELLOW + "inside the " + bookConfig.name + " folder.",COLORS.DEFAULT);
               shell.cd('..');
-              console.log(process.cwd());
             }
           });
         });
@@ -251,7 +253,7 @@
     checkArgs();
   }
   else {
-    console.log(process.argv);
+    console.log(process.argv[0].includes("node"));
   }
 
   // EXPORTS
