@@ -283,8 +283,8 @@
     });
   }
 
-  module.exports.install = (callback) => {
-    InstallManager.install((err, message) => {
+  module.exports.install = (path, callback) => {
+    InstallManager.install(path, (err, message) => {
       if (message)
         callback(null, message);
       else if (err) callback(err, null);
