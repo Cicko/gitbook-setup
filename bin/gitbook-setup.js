@@ -177,7 +177,7 @@
       if (argv._.includes("create"))
         createBook(argv);
       else if (argv._.includes("install"))
-        InstallManager.install((err, msg) => {
+        InstallManager.installNoPath((err, msg) => {
           if (err) console.log(err);
           if (msg) console.log(msg);
         });
