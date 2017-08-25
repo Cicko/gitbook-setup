@@ -178,7 +178,7 @@
         createBook(argv);
       else if (argv._.includes("install"))
         InstallManager.installNoPath((err, msg) => {
-          if (err) console.log(err);
+          if (err) console.log("ERR: " + err);
           if (msg) console.log(msg);
         });
       else if (argv._.includes('build'))
@@ -258,6 +258,7 @@
 
   // EXPORTS
   module.exports.create = (info, callback) => {
+    if (info.path) shell.cd(info.path);
     BookConfig.check(info, (err, fixedContent) => {
       if (err) console.log(err);
       else {
