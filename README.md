@@ -2,17 +2,71 @@
 
 ### Welcome to the gitbook-setup package
 
-To install the package you have to return
-```bash
-> npm install -g gitbook-setup
+
+## Global installation
+
+```
+$ npm install -g gitbook-setup
 ```
 
-You have it to install it globally (-g option) if you want to execute the program directly on the console. To see
-how to execute the command you have just to run:
 
-```bash
-> gitbook-setup [help]
+
 ```
+$ gitbook-setup [help]
+```
+
+
+
+## Local installation
+
+```
+$ npm install --save gitbook-setup
+```
+
+## Usage
+
+#### Doc creation
+
+```js
+var gitbook_setup = require('gitbook-setup')
+
+var info = {
+  name: "title",
+  deploys: "heroku"
+}
+
+gitbook_setup.create(info, (err, allInfo) => {
+  if (err) console.log(err)
+  else {
+    console.log("Book summary: ")
+    console.log(allInfo)
+  }
+})
+```
+
+Optionally info can have a path variable to create the document at that path:
+
+```js
+var gitbook_setup = require('gitbook-setup')
+
+var info = {
+  name: "title",
+  deploys: "heroku",
+  path: "/home/rudy/Desktop/Docs/"
+}
+
+gitbook_setup.create(info, (err, allInfo) => {
+  if (err) console.log(err)
+  else {
+    console.log("Book summary: ")
+    console.log(allInfo)
+  }
+})
+```
+
+#### Doc installation
+
+
 
 
 
