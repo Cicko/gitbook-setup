@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ULL-ESIT-GRADOII-TFG/rudolf-cicko-17.git"
+    "url": "git+https://github.com/cicko/gitbook-setup.git"
   },
   "keywords": [
     "gitbook",
