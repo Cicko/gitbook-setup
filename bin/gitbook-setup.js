@@ -53,7 +53,7 @@
     if (args.n) {
       var bookConfig = {
         "name": args.n || "NoNameBook",
-        "template": (args.t)? args.t : "book",
+        "template": (args.t)? args.t : "theme-default",
         "deploys": args.d? args.d.split(",") : new Array(),
         "description": args.i || "No Description about " + (args.n || "NoNameBook"),
         "authors": args.a? args.a.split(", ") : new Array(process.env.USER),
@@ -95,6 +95,7 @@
   function createBookByConfig (bookConfig, callback) {
 
     var error = false
+    /*
     ModulesManager.checkIfNPMModuleExists('gitbook-setup-template-' + bookConfig.template, function (exists) {
       if (!exists) {
         var err_str = "ERROR: Template " + bookConfig.template + " does not exist"
@@ -102,7 +103,7 @@
         if (callback) callback(err_str)
         process.exit(-1)
       }
-    })
+    })*/
     bookConfig.deploys.reduce(function (acc, plugin) {
       return acc.then( function(_ready) {
         return new Promise(function (resolve, _reject) {
@@ -124,7 +125,7 @@
                 process.exit(-2)
               }
               else {
-                console.log(COLORS.GREEN, plugin + " is correct module name")
+                //console.log(COLORS.GREEN, plugin + " is correct module name")
                 resolve("ok")
               }
             })
@@ -132,7 +133,6 @@
         })
       })
     }, Promise.resolve(null)).then (function () {
-      console.log("Entramo")
       BookConfig.createFile(bookConfig)
       createDependenciesFile(bookConfig, function(err) {
         GulpfileCreator.createGulpfile(bookConfig)
@@ -154,7 +154,7 @@
 
   // This function fill the dependencies.json file to contain all dependencies for template and deployments that will be pushed to package.json
   function createDependenciesFile (answers, callback) {
-    DependenciesManager.addDependency('gitbook-setup-template-' + (answers.template || answers.type))
+    //DependenciesManager.addDependency('gitbook-setup-template-' + (answers.template || answers.type))
     if (answers.deploys.length > 0) {
       answers.deploys.forEach(function (element, i, array) {
           DependenciesManager.addDependency('gitbook-setup-deploy-' + element)
@@ -178,7 +178,7 @@
       if (argv._.includes("create"))
         createBook(argv)
       else if (argv._.includes("install"))
-        InstallManager.installNoPath((err, msg) => {
+        InstallManager.install((err, msg) => {
           if (err) console.log("ERR: " + err)
           if (msg) console.log(msg)
         })
@@ -215,7 +215,7 @@
       else if (argv._.includes("version") || argv.version || argv.v) {
         showVersion()
       }
-      else TheHelper.showGeneralHelp()
+      //else TheHelper.showGeneralHelp()
     }
   }
 
@@ -259,6 +259,60 @@
     TheHelper.showGeneralHelp()
   }
 
+
+  // NEW EXPORTS (with promises)
+
+  module.exports.Create = (info) => {
+    return new Promise ((resolve, reject) => {
+      var oldPath = process.cwd()
+      if (info.path) {
+        shell.cd(info.path)
+        info.parentPath = info.path
+        info.path = path.join(info.path, info.name)
+      }
+      else {
+        info.path = path.join(process.cwd(), info.name)
+      }
+
+      BookConfig.check(info, (err, fixedContent) => {
+        if (err) reject(err)
+        else {
+          createBookByConfig(fixedContent, (err) => {
+            if (err) reject(err)
+            else {
+              shell.cd(info.path)
+              console.log(info.path)
+              console.log("Ahora estamos en: " + process.cwd())
+              resolve("ok")
+            }
+          })
+        }
+      })
+    })
+  }
+
+  module.exports.Install = () => {
+    return new Promise ((resolve, reject) => {
+      InstallManager.install((err, message) => {
+        if (message == " - Finished installation") resolve(message)
+        else if (message)
+          console.log(COLORS.GREEN, message, COLORS.DEFAULT)
+        else if (err) reject()
+      })
+    })
+  }
+
+  module.exports.Build = () => {
+    return new Promise ((resolve, reject) => {
+      exec('gitbook build', (err, out) => {
+        if (err) reject(err)
+        else resolve("ok")
+      })
+    })
+  }
+
+  // END NEW EXPORTS (with promises)
+
   // EXPORTS
   module.exports.create = (info, callback) => {
     var oldPath = process.cwd()
@@ -299,7 +353,7 @@
   }
 
   module.exports.install = (path, callback) => {
-    if (!path && typeof path === 'function') callback = path
+    if (!callback && typeof path === 'function') callback = path
     InstallManager.install(path, (err, message) => {
       if (message == "done") callback(null,null)
       else if (message)
@@ -307,12 +361,13 @@
       else if (err) callback(err, null)
     })
   }
+/*
   module.exports.build = (callback) => {
     exec('gitbook build', (err, out) => {
       if (err) callback(err)
       callback(null)
     })
-  }
+  }*/
   module.exports.authenticate = (callback) => {
     ghManager.authenticate((err) => {
       if (err) callback(err)

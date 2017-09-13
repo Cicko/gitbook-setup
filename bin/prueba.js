@@ -1,38 +1,37 @@
 
 
 var gitbook_setup = require('./gitbook-setup.js')
+var Create = gitbook_setup.Create
+var Install = gitbook_setup.Install
+var Build = gitbook_setup.Build
 
-var info = {name: 'title'}//, path: '/home/rudy/Escritorio/tfg'}
+var info = {
+  name: 'title',
+  deploys: ['heroku', 'gh-pages']
+}                                                         //, path: '/home/rudy/Escritorio/tfg'}
 
 
-function create(info) {
-  return new Promise ((resolve, reject) => {
-    gitbook_setup.create(info, (err, msg) => {
-      if (err) reject("ERR: " + err)
+// BEAUTIFUL
+
+Create(info).then(Install).then(Build).catch(err => console.log(err))
+
+
+
+
+// UGLY
+
+/*
+gitbook_setup.create((err) => {
+  if (err) console.log(err)
+  else {
+    gitbook_setup.install((err) => {
+      if (err) console.log(err)
       else {
-        resolve(info.name)
+        gitbook_setup.build((err) => {
+          if (err) console.log(err)
+        })
       }
     })
-  })
-}
-
-
-function install (title){
-  var path = title? require('path').join(process.cwd(), title) : process.cwd()
-  require('shelljs').cd(path);
-  console.log("Actual path: " + process.cwd())
-  return new Promise ((resolve, reject) => {
-    gitbook_setup.install((err, msg) => {
-      if (err) reject("ERR: " + err)
-      else if (msg) console.log(msg)
-      else resolve("Document correctly installed");
-    })
-  })
-}
-
-
-
-create(info)
-.then((title) => install(title))
-.then(msg => console.log(msg))
-.catch(err => console.log(err))
+  }
+})
+*/
