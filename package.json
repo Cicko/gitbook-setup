@@ -1,6 +1,6 @@
 {
   "name": "gitbook-setup",
-  "version": "1.3.4",
+  "version": "1.3.5",
   "description": "This is my first node package that will be for setup gitbook.",
   "main": "./bin/gitbook-setup.js",
   "bin": {
