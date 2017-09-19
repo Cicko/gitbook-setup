@@ -2,6 +2,7 @@
 
 ### Welcome to the gitbook-setup package
 
+[![Coverage Status](https://coveralls.io/repos/github/Cicko/gitbook-setup/badge.svg?branch=master)](https://coveralls.io/github/Cicko/gitbook-setup?branch=master)
 [![Build Status](https://travis-ci.org/Cicko/gitbook-setup.svg?branch=master)](https://travis-ci.org/Cicko/gitbook-setup)
 [![npm](https://img.shields.io/npm/dw/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dm/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
