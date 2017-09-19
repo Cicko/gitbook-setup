@@ -183,9 +183,11 @@
           if (msg) console.log(msg)
         })
       else if (argv._.includes('build'))
-        exec('gitbook build', function (err, out) {
-          if (err) console.log(err)
-          console.log('_book folder is created')
+        checkModuleGloballyInstalled('gitbook-cli', () => {
+          exec('gitbook build', (err, out) => {
+            if (err) reject(err)
+            else resolve("ok")
+          })
         })
       else if (argv._.includes('authenticate'))
         loginOnGithub()
@@ -304,9 +306,11 @@
 
   module.exports.Build = () => {
     return new Promise ((resolve, reject) => {
-      exec('gitbook build', (err, out) => {
-        if (err) reject(err)
-        else resolve("ok")
+      checkModuleGloballyInstalled('gitbook-cli', () => {
+        exec('gitbook build', (err, out) => {
+          if (err) reject(err)
+          else resolve("ok")
+        })
       })
     })
   }
