@@ -1,2 +1,5 @@
 #!/usr/bin/env node
-require('open')("https://cicko.github.io/gitbook-setup/");
+var opn require('opn')
+
+
+opn("https://cicko.github.io/gitbook-setup/");
