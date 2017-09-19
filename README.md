@@ -1,4 +1,5 @@
 
+# README STILL IN WRITING PROCESS
 
 ### Welcome to the gitbook-setup package
 
@@ -8,6 +9,7 @@
 [![npm](https://img.shields.io/npm/dm/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dt/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 
+<a href='https://pledgie.com/campaigns/34797'><img alt='Click here to lend your support to: Gitbook-Setup and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/34797.png?skin_name=chrome' border='0' ></a>
 
 ## Global installation
 
