@@ -2,7 +2,7 @@
 
 ### Welcome to the gitbook-setup package
 
-
+[![Build Status](https://travis-ci.org/Cicko/gitbook-setup.svg?branch=master)](https://travis-ci.org/Cicko/gitbook-setup)
 [![npm](https://img.shields.io/npm/dw/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dm/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dt/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
