@@ -7,7 +7,7 @@
     "gitbook-setup": "./bin/gitbook-setup.js"
   },
   "scripts": {
-    "postinstall": "node welcome.js --unsafe-perm"
+    "postinstall": "./welcome.js"
   },
   "repository": {
     "type": "git",
