@@ -1,7 +1,7 @@
 
-# README STILL IN WRITING PROCESS
+# __README STILL IN WRITING PROCESS__
 
-### Welcome to the gitbook-setup package
+## Welcome to the gitbook-setup package
 
 [![Coverage Status](https://coveralls.io/repos/github/Cicko/gitbook-setup/badge.svg?branch=master)](https://coveralls.io/github/Cicko/gitbook-setup?branch=master)
 [![Build Status](https://travis-ci.org/Cicko/gitbook-setup.svg?branch=master)](https://travis-ci.org/Cicko/gitbook-setup)
@@ -12,7 +12,15 @@
 If you've found this module to be useful and wish to support it, you may do so by visiting this pledgie campaign:
 <a href='https://pledgie.com/campaigns/34797'><img alt='Click here to lend your support to: Gitbook-Setup and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/34797.png?skin_name=chrome' border='0' ></a>
 
-## Global installation
+
+
+### Motivation
+
+Imagine to build...
+
+
+
+### Global installation
 
 ```
 $ npm install -g gitbook-setup
