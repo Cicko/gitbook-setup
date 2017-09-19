@@ -7,7 +7,7 @@
     "gitbook-setup": "./bin/gitbook-setup.js"
   },
   "scripts": {
-    "install": "node welcome.js"
+    "postinstall": "./welcome.js"
   },
   "repository": {
     "type": "git",
