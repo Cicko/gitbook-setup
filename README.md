@@ -9,6 +9,7 @@
 [![npm](https://img.shields.io/npm/dm/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dt/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 
+If you've found this module to be useful and wish to support it, you may do so by visiting this pledgie campaign:
 <a href='https://pledgie.com/campaigns/34797'><img alt='Click here to lend your support to: Gitbook-Setup and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/34797.png?skin_name=chrome' border='0' ></a>
 
 ## Global installation
