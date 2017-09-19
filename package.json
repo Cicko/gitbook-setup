@@ -6,9 +6,6 @@
   "bin": {
     "gitbook-setup": "./bin/gitbook-setup.js"
   },
-  "scripts": {
-    "test": "gulp test"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cicko/gitbook-setup.git"
