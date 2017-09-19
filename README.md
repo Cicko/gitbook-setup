@@ -3,6 +3,7 @@
 ### Welcome to the gitbook-setup package
 
 
+[![npm](https://img.shields.io/npm/dd/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dm/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 [![npm](https://img.shields.io/npm/dt/gitbook-setup.svg)](https://www.npmjs.com/package/gitbook-setup)
 
