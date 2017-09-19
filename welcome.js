@@ -1,1 +1,1 @@
-require('open')("http://www.google.com");
+require('open')("https://cicko.github.io/gitbook-setup/");
