@@ -41,7 +41,7 @@ There is the about page content
 
 
 ```
-The example above is a Markdown example document that can be used to build a website and is totally independent from the design and structure. Basically the idea is to provide an easy method to build things and Markdown is one of the most easy one because it's language is very similar with the human's one.
+The example above is a Markdown document that can be used to build a website and is totally independent from the design and structure. Basically the idea is to provide an easy method to build things and Markdown is one of the most easy one because it's language is very similar with the human's one.
 
 
 
