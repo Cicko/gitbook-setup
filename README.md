@@ -16,7 +16,35 @@ If you've found this module to be useful and wish to support it, you may do so b
 
 ### Motivation
 
-Imagine to build...
+The main purpose for *gitbook-setup* is to allow creation of documents with custom design and structure and deployment of them to a different platforms or servers easily. Imagine to build a whole website with markdown syntax! It's possible with *gitbook-setup* because gitbook allows creation of themes and them define the design and structure of the document.
+
+```Markdown
+
+# NAV
+
+- Home
+- About
+- Blog
+- Contact
+
+
+# Home
+
+There is the home page content
+
+
+# About
+
+There is the about page content
+
+[Button link="http://www.google.com"] This is a button that opens Google [/Button]
+
+
+```
+The example above is a Markdown example document that can be used to build a website and is totally independent from the design and structure. Basically the idea is to provide an easy method to build things and Markdown is one of the most easy one because it's language is very similar with the human's one.
+
+
+
 
 
 
